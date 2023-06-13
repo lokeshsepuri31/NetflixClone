@@ -138,9 +138,9 @@ public class SearchFragment extends Fragment {
 
     public void renderMovieSearch(List<Movies> moviesList){
         this.moviesList = moviesList;
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         SearchAdapter searchAdapter = new SearchAdapter(searchAdapterItems());
         movieListRecyclerView.setAdapter(searchAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         movieListRecyclerView.setLayoutManager(layoutManager);
     }
 
