@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp">
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="180dp"
+            android:background="#FD000000"
+            android:id="@+id/card_relative">
+
+            <ImageView
+                android:clickable="true"
+                android:id="@+id/img_child_item"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/search"
+                android:scaleType="fitCenter" />
+
+                <TextView
+                    android:id="@+id/child_item_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Data"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:layout_alignParentBottom="true"
+                    android:translationZ="1dp"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

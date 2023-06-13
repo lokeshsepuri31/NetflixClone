@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Netflix</string>
+    <string name="login_image">https://variety.com/wp-content/uploads/2020/05/netflix-logo.png?w=1000&amp;h=563&amp;crop=1&amp;resize=1000%2C563</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_label_4">Profile</string>
+    <string name="text_label_3">Favorites</string>
+    <string name="text_label_1">Home</string>
+    <string name="text_label_2">Search</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+</resources>
