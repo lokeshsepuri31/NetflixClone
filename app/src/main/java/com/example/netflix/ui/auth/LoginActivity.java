@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -14,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.netflix.R;
+import com.example.netflix.util.NetworkReceiver;
 import com.example.netflix.util.PicassoVM;
 import com.example.netflix.databinding.ActivityLoginBinding;
 import com.google.android.material.textfield.TextInputLayout;
@@ -27,9 +32,19 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
 
     TextInputLayout password;
 
+    NetworkReceiver networkChangeReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        Intent errorIntent = new Intent(this,ErrorActivity.class);
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        networkChangeReceiver = new NetworkReceiver(this);
+        registerReceiver(networkChangeReceiver, intentFilter);
+
         ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         loginVM = new ViewModelProvider(this).get(LoginVM.class);
         loginVM.loginListener = this;

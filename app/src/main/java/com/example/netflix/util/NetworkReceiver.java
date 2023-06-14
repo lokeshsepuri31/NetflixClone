@@ -6,16 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.netflix.ui.auth.ErrorActivity;
 
 
-public class NetworkReciever extends BroadcastReceiver {
+public class NetworkReceiver extends BroadcastReceiver {
     Activity activity;
 
-    public NetworkReciever(Activity activity){
+    public NetworkReceiver(Activity activity){
         this.activity = activity;
     }
 

@@ -28,17 +28,17 @@ public class SuccessActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        Timer t = new Timer();
-//        t.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        }, 1, 2000);
-//
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        sharedPreferences.edit().putBoolean(LoginActivity.ISLOGIN,true).commit();
-//
-//        startActivity(new Intent(this,HomeActivity.class));
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+
+            }
+        }, 1, 2000);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.edit().putBoolean(LoginActivity.ISLOGIN,true).commit();
+
+        startActivity(new Intent(this,HomeActivity.class));
     }
 }
