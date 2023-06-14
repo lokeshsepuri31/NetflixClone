@@ -1,12 +1,10 @@
 package com.example.netflix.ui.auth.adapter;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.transition.Scene;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.netflix.R;
-import com.example.netflix.ui.auth.HomeVM;
-import com.example.netflix.ui.auth.fragments.HomeFragment;
+import com.example.netflix.ui.auth.WatchNowActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -25,9 +22,11 @@ public class ChildItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private List<ChildItem> childItemList;
     private View view;
-
     RelativeLayout relativeLayout;
 
+    Activity activity;
+
+    public static final String MOVIE_SELECTED = "Watch Now";
 
 
     ChildItemAdapter(List<ChildItem> childItemList) {
@@ -46,15 +45,19 @@ public class ChildItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ChildItem childItem = childItemList.get(position);
         ChildViewHolder childViewHolder = (ChildViewHolder) holder;
         childViewHolder.childItemTitle.setText(childItem.getChildItemTitle());
+        activity = childItem.getActivity();
         Picasso.get().load(childItem.getUrl()).into(childViewHolder.childImage);
-        relativeLayout = view.findViewById(R.id.card_relative);
-        relativeLayout.setOnClickListener((v)->{
+        childViewHolder.childImage.setOnClickListener((v)->{
             onMovieSelected(position);
         });
     }
 
     public void onMovieSelected(int position){
-        Intent intent = new Intent();
+        Intent intent = new Intent(activity,WatchNowActivity.class);
+        ChildItem childItem = childItemList.get(position);
+        intent.putExtra(MOVIE_SELECTED,childItem);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        activity.startActivity(intent);
     }
 
     @Override

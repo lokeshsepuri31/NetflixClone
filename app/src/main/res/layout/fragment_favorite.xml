@@ -6,10 +6,9 @@
     tools:context=".ui.auth.fragments.FavoriteFragment"
     android:id="@+id/fragment_favorite">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/favorite_movies_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"/>
 
 </FrameLayout>

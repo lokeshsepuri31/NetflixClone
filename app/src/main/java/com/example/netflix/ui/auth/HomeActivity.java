@@ -6,8 +6,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -22,6 +26,7 @@ import com.example.netflix.ui.auth.fragments.HomeFragment;
 import com.example.netflix.ui.auth.fragments.ProfileFragment;
 import com.example.netflix.ui.auth.fragments.SearchFragment;
 import com.example.netflix.ui.auth.listeners.BottomNavigationListener;
+import com.example.netflix.util.NetworkReciever;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -35,6 +40,8 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
     BottomNavigationView bottomNavigationView;
 
     FragmentAdapter fragmentAdapter;
+
+    NetworkReciever networkChangeReceiver;
 
     public static final int HOME_POSITION = 0;
     public static final int SEARCH_POSITION = 1;
@@ -54,6 +61,13 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
         fragmentAdapter.add(new SearchFragment());
         fragmentAdapter.add(new FavoriteFragment());
         fragmentAdapter.add(new ProfileFragment());
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        Intent errorIntent = new Intent(this,ErrorActivity.class);
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        networkChangeReceiver = new NetworkReciever(this);
+        registerReceiver(networkChangeReceiver, intentFilter);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 

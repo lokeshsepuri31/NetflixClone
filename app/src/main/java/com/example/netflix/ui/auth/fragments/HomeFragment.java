@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.netflix.R;
@@ -57,6 +58,8 @@ public class HomeFragment extends Fragment {
     PicassoVM picassoVM;
 
     RecyclerView parentRecyclerViewItem;
+
+    ProgressBar progressBar;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -103,6 +106,7 @@ public class HomeFragment extends Fragment {
         parentRecyclerViewItem = view.findViewById(R.id.recyler_view);
         homeVM = new ViewModelProvider(getActivity()).get(HomeVM.class);
         picassoVM = new ViewModelProvider(getActivity()).get(PicassoVM.class);
+        progressBar = getActivity().findViewById(R.id.progress_bar);
         homeVM.getMovies(new HomeListener<List<Movies>>() {
             @Override
             public void onSuccess(List<Movies> response) {
@@ -121,6 +125,7 @@ public class HomeFragment extends Fragment {
 
     public void renderMovies(List<Movies> upcomingMovies){
         this.upcomingMovies = upcomingMovies;
+        progressBar.setVisibility(View.GONE);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         ParentItemAdapter parentItemAdapter = new ParentItemAdapter(parentItemList());
         parentRecyclerViewItem.setAdapter(parentItemAdapter);
@@ -145,7 +150,7 @@ public class HomeFragment extends Fragment {
                     && movies.getPrimaryImage().getCaption().getMovieName() != null) {
                 String url = movies.getPrimaryImage().getUrl();
                 String movieName = movies.getOriginalText().getMovieName();
-                childItemList.add(new ChildItem(movieName,url));
+                childItemList.add(new ChildItem(movieName,url,getActivity(),movies.getId()));
             }
         }
         return childItemList;
