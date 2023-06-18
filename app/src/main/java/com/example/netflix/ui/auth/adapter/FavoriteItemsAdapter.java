@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import com.example.netflix.R;
 import com.example.netflix.data.pojo.Items;
 import com.example.netflix.ui.auth.WatchNowActivity;
+import com.example.netflix.util.ByteUtility;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -53,12 +54,13 @@ public class FavoriteItemsAdapter extends ArrayAdapter<Items> {
         TextView delete = convertView.findViewById(R.id.delete);
         delete.setOnClickListener((view)->{
             items.remove(item);
+//            onMovieDeleted(item);
             this.notifyDataSetChanged();
         });
 
         if (item != null) {
             text.setText(item.getMovieTitle());
-            Picasso.get().load(item.getUrl()).into(image);
+            image.setImageBitmap(ByteUtility.getBitmapFromByteArray(item.getImage()));
         }
         return convertView;
     }

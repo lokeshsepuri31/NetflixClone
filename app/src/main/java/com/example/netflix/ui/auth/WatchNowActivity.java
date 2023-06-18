@@ -44,11 +44,7 @@ public class WatchNowActivity extends AppCompatActivity {
 
     ChildItem watchNowMovie;
 
-    public static List<ChildItem> favoriteMovies = new ArrayList<>();
-
     SharedPreferences sharedPreferences;
-
-    public static final String FAVORITE_MOVIE_KEY = "Favorite Movie";
 
     DatabaseCallback databaseCallback = new DatabaseCallback();
 
@@ -86,14 +82,18 @@ public class WatchNowActivity extends AppCompatActivity {
 
     public void addToFavorites(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String username = sharedPreferences.getString(LoginActivity.LOGIN_USERNAME,"");
-        int userId = databaseCallback.getUserIdByUsername(databaseHandler,username);
+        int userId = sharedPreferences.getInt(LoginActivity.LOGIN_USERID,0);
         Bitmap bitmap = ((BitmapDrawable)movieImage.getDrawable()).getBitmap();
         byte[] image = ByteUtility.getBitmapAsByteArray(bitmap);
-        FavoriteMovies favoriteMovies = new FavoriteMovies(userId,watchNowMovie.getId(),image,watchNowMovie.getChildItemTitle());
-        boolean addedMovie = databaseCallback.addFavMovie(databaseHandler,favoriteMovies);
-        if (addedMovie){
-            Toast.makeText(this, favoriteMovies.getMovieTitle()+" is added to favorites.", Toast.LENGTH_SHORT).show();
+        boolean isMovieAlreadyInDB = databaseCallback.isFavMovieAlreadyInLoggedInUser(databaseHandler,watchNowMovie.getId(),userId);
+        if(!isMovieAlreadyInDB) {
+            FavoriteMovies favoriteMovies = new FavoriteMovies(userId,watchNowMovie.getId(),image,watchNowMovie.getChildItemTitle());
+            boolean addedMovie = databaseCallback.addFavMovie(databaseHandler, favoriteMovies);
+            if (addedMovie) {
+                Toast.makeText(this, favoriteMovies.getMovieTitle() + " is added to favorites.", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(this, "It is already added to favorites!!", Toast.LENGTH_SHORT).show();
         }
     }
 

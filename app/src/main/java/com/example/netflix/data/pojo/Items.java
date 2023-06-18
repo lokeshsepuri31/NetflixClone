@@ -2,12 +2,23 @@ package com.example.netflix.data.pojo;
 
 public class Items {
 
-    String movieTitle,url;
+    String id;
+    String movieTitle;
+    byte[] image;
 
 
-    public Items(String movieTitle, String url) {
+    public Items(String id,String movieTitle, byte[] image) {
+        this.id = id;
         this.movieTitle = movieTitle;
-        this.url = url;
+        this.image = image;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getMovieTitle() {
@@ -18,11 +29,11 @@ public class Items {
         this.movieTitle = movieTitle;
     }
 
-    public String getUrl() {
-        return url;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

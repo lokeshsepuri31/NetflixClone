@@ -83,7 +83,6 @@ public class DatabaseCallback {
     public boolean addFavMovie(DatabaseHandler databaseHandler, FavoriteMovies favoriteMovies){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Set<Callable<Boolean>> callables = new HashSet<>();
-        Handler handler = new Handler(Looper.getMainLooper());
         callables.add(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
@@ -100,6 +99,25 @@ public class DatabaseCallback {
         }
 
         return addedMovie;
+    }
+
+    public boolean isFavMovieAlreadyInLoggedInUser(DatabaseHandler databaseHandler,String id,int userId){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Set<Callable<Boolean>> callables = new HashSet<>();
+        callables.add(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                FavoriteMovies favoriteMovies1 = databaseHandler.favoriteMoviesDAO().getFavMovieofLoggedInUser(id,userId);
+                return favoriteMovies1 != null;
+            }
+        });
+        Boolean isMovieAlreadyThere = false;
+        try{
+            isMovieAlreadyThere = executorService.invokeAny(callables);
+        }catch (Exception e){
+            Log.e(TAG, e.getMessage());
+        }
+        return isMovieAlreadyThere;
     }
 
 }

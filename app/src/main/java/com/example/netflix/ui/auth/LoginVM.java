@@ -14,6 +14,8 @@ public class LoginVM extends ViewModel {
 
     public String username = "", password = "";
 
+    public int userId = 0;
+
     public LoginListener loginListener;
 
     public DatabaseHandler databaseHandler;
@@ -28,6 +30,7 @@ public class LoginVM extends ViewModel {
         } else {
             if (NetworkReceiverCallback.isConnection(view.getContext())) {
                 Users users = databaseCallback.logIn(databaseHandler, username);
+                userId = users.getId();
                 if (users != null && users.getPassword().equals(password))
                     loginListener.onSuccess();
                 else

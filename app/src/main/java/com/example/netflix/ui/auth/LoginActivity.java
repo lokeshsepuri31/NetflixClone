@@ -22,6 +22,7 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
 
     public static final String ISLOGIN = "IsLogin";
     public static final String LOGIN_USERNAME = "loggedInUsername";
+    public static final String LOGIN_USERID = "loggedInUserId";
     LoginVM loginVM;
 
     int backCounts = 0;
@@ -60,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
     public void onSuccess() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.edit().putString(LOGIN_USERNAME,loginVM.username).commit();
+        sharedPreferences.edit().putInt(LOGIN_USERID,loginVM.userId).commit();
         sharedPreferences.edit().putBoolean(ISLOGIN, true).commit();
         startActivity(new Intent(this, HomeActivity.class));
     }

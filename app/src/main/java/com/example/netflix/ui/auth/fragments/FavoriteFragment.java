@@ -101,7 +101,7 @@ public class FavoriteFragment extends Fragment {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        childItem = WatchNowActivity.favoriteMovies;
+
 
         initializeItems();
         adapter = new FavoriteItemsAdapter(getContext(), itemsList);
@@ -115,8 +115,8 @@ public class FavoriteFragment extends Fragment {
     }
 
     public void initializeItems(){
-        for(ChildItem childItem1: childItem){
-            itemsList.add(new Items(childItem1.getChildItemTitle(),childItem1.getUrl()));
-        }
+//        for(ChildItem childItem1: childItem){
+//            itemsList.add(new Items(childItem1.getId(),childItem1.getChildItemTitle(),childItem1));
+//        }
     }
 }
