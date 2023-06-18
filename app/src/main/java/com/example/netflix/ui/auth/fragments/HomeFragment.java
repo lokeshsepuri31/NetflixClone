@@ -26,6 +26,7 @@ import com.example.netflix.ui.auth.HomeVM;
 import com.example.netflix.ui.auth.adapter.ChildItem;
 import com.example.netflix.ui.auth.adapter.ParentItem;
 import com.example.netflix.ui.auth.adapter.ParentItemAdapter;
+import com.example.netflix.util.NetworkReceiverCallback;
 import com.example.netflix.util.PicassoVM;
 
 import java.io.IOException;
@@ -154,5 +155,12 @@ public class HomeFragment extends Fragment {
             }
         }
         return childItemList;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!NetworkReceiverCallback.isConnection(getActivity()))
+            NetworkReceiverCallback.showSnackbar(parentRecyclerViewItem);
     }
 }

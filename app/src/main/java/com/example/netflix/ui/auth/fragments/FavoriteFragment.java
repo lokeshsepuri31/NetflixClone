@@ -100,10 +100,6 @@ public class FavoriteFragment extends Fragment {
         favoriteMovies = view.findViewById(R.id.favorite_movies_list);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        String jsonString = sharedPreferences.getString(WatchNowActivity.FAVORITE_MOVIE_KEY,null);
-//        Type type = new TypeToken<List<ChildItem>>() {}.getType();
-//        if(jsonString != null)
-//             childItem = new GsonBuilder().create().fromJson(jsonString,type);
 
         childItem = WatchNowActivity.favoriteMovies;
 

@@ -17,10 +17,10 @@
 
 
         <ImageView
-            android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/login_details"
+            android:src="@drawable/app_logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +38,6 @@
             app:layout_constraintVertical_bias="0.62">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/username"
                 style="@style/Widget.App.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,6 +45,7 @@
                 android:layout_margin="15dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/profile_selector"
@@ -90,7 +90,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/signup_submit"
+                android:id="@+id/login_submit"
                 android:layout_width="370dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

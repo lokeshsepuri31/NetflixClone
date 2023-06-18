@@ -10,7 +10,6 @@ public class BottomNavigationListener implements BottomNavigationView.OnNavigati
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        System.out.println(item.getItemId());
         return false;
     }
 }

@@ -34,7 +34,7 @@ public class SuccessActivity extends AppCompatActivity {
             public void run() {
 
             }
-        }, 1, 2000);
+        }, 10, 2000);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.edit().putBoolean(LoginActivity.ISLOGIN,true).commit();

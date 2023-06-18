@@ -5,5 +5,7 @@ public interface LoginListener {
     void onSuccess();
 
     void onFailure(String message);
+
+    void onNetworkError();
 }
 

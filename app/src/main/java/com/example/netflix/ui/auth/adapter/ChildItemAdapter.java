@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.netflix.R;
 import com.example.netflix.ui.auth.WatchNowActivity;
+import com.example.netflix.util.NetworkReceiverCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -22,8 +23,6 @@ public class ChildItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private List<ChildItem> childItemList;
     private View view;
-    RelativeLayout relativeLayout;
-
     Activity activity;
 
     public static final String MOVIE_SELECTED = "Watch Now";
@@ -48,7 +47,10 @@ public class ChildItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         activity = childItem.getActivity();
         Picasso.get().load(childItem.getUrl()).into(childViewHolder.childImage);
         childViewHolder.childImage.setOnClickListener((v)->{
-            onMovieSelected(position);
+            if(NetworkReceiverCallback.isConnection(activity))
+                onMovieSelected(position);
+            else
+                NetworkReceiverCallback.showSnackbar(view);
         });
     }
 

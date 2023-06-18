@@ -8,6 +8,8 @@
     <string name="text_label_1">Home</string>
     <string name="text_label_2">Search</string>
     <string name="username">Username</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="re_password">Re-Password</string>
     <string name="network_error">Please check the internet connectivity</string>
 </resources>

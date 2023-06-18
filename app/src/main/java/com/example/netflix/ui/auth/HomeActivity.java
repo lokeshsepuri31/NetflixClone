@@ -19,7 +19,7 @@ import com.example.netflix.ui.auth.fragments.FavoriteFragment;
 import com.example.netflix.ui.auth.fragments.HomeFragment;
 import com.example.netflix.ui.auth.fragments.ProfileFragment;
 import com.example.netflix.ui.auth.fragments.SearchFragment;
-import com.example.netflix.util.NetworkReceiver;
+import com.example.netflix.util.NetworkReceiverCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity implements  BottomNavigationView.OnNavigationItemSelectedListener {
@@ -29,7 +29,6 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
 
     FragmentAdapter fragmentAdapter;
 
-    NetworkReceiver networkChangeReceiver;
 
     public static final int HOME_POSITION = 0;
     public static final int SEARCH_POSITION = 1;
@@ -49,13 +48,6 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
         fragmentAdapter.add(new SearchFragment());
         fragmentAdapter.add(new FavoriteFragment());
         fragmentAdapter.add(new ProfileFragment());
-
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        Intent errorIntent = new Intent(this,ErrorActivity.class);
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        networkChangeReceiver = new NetworkReceiver(this);
-        registerReceiver(networkChangeReceiver, intentFilter);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
