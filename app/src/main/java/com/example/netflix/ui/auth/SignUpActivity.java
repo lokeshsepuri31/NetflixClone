@@ -123,7 +123,7 @@ public class SignUpActivity extends AppCompatActivity implements LoginListener{
         sharedPreferences.edit().putString(LOGIN_USERNAME,username[0]).commit();
 
         Intent intent = new Intent(this,SuccessActivity.class);
-        intent.putExtra("message","Your Account is ready!");
+        intent.putExtra("message","Your Account is ready!, Login with username (Ex: something@gmail.com your username is 'something'.)");
         startActivity(intent);
     }
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.netflix.R;
@@ -15,12 +16,18 @@ import java.util.TimerTask;
 
 public class SuccessActivity extends AppCompatActivity {
 
+    Button login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_success);
         TextView textView = findViewById(R.id.message);
         textView.setText(getIntent().getStringExtra("message"));
+        login = findViewById(R.id.login_page);
+        login.setOnClickListener((view)->{
+            onBackPressed();
+        });
         getSupportActionBar().hide();
         getWindow().setStatusBarColor(getResources().getColor(R.color.black));
     }
@@ -35,10 +42,11 @@ public class SuccessActivity extends AppCompatActivity {
 
             }
         }, 10, 2000);
+    }
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.edit().putBoolean(LoginActivity.ISLOGIN,true).commit();
-
-        startActivity(new Intent(this,HomeActivity.class));
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this,LoginActivity.class));
     }
 }
