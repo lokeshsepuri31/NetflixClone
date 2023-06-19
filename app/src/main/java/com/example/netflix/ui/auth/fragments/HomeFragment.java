@@ -104,10 +104,10 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        parentRecyclerViewItem = view.findViewById(R.id.recyler_view);
+        parentRecyclerViewItem = view.findViewById(R.id.recycler_view);
         homeVM = new ViewModelProvider(getActivity()).get(HomeVM.class);
         picassoVM = new ViewModelProvider(getActivity()).get(PicassoVM.class);
-        progressBar = getActivity().findViewById(R.id.progress_bar);
+        progressBar = view.findViewById(R.id.progress_bar);
         homeVM.getMovies(new HomeListener<List<Movies>>() {
             @Override
             public void onSuccess(List<Movies> response) {
@@ -160,7 +160,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(!NetworkReceiverCallback.isConnection(getActivity()))
+        if(!NetworkReceiverCallback.isConnection(getActivity())){
             NetworkReceiverCallback.showSnackbar(parentRecyclerViewItem);
+            HomeActivity.selectBottomNavigationViewMenuItem(HomeActivity.FAVORITE_POSITION);
+        }
     }
 }

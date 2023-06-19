@@ -1,18 +1,14 @@
 package com.example.netflix.ui.auth;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,13 +22,6 @@ import com.example.netflix.ui.auth.adapter.ChildItem;
 import com.example.netflix.ui.auth.adapter.ChildItemAdapter;
 import com.example.netflix.util.ByteUtility;
 import com.squareup.picasso.Picasso;
-import com.google.gson.GsonBuilder;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import com.google.android.material.button.MaterialButton;
 
 
 public class WatchNowActivity extends AppCompatActivity {

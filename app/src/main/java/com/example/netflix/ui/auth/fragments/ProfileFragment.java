@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.netflix.R;
 import com.example.netflix.ui.auth.LoginActivity;
@@ -34,6 +35,10 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    TextView loggedInUser;
+
+    SharedPreferences sharedPreferences;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -78,6 +83,12 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        loggedInUser = view.findViewById(R.id.loggedInUser);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        loggedInUser.setText("Hi,"+sharedPreferences.getString(LoginActivity.LOGIN_USERNAME,""));
+
         Button logout = view.findViewById(R.id.textButton);
 
         logout.setOnClickListener((v)->{
@@ -88,7 +99,6 @@ public class ProfileFragment extends Fragment {
     }
 
     public void onLogout(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         sharedPreferences.edit().clear().commit();
         startActivity(new Intent(getActivity(), LoginActivity.class));
     }

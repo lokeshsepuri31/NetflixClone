@@ -1,67 +1,76 @@
 package com.example.netflix.ui.auth.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.netflix.R;
-import com.example.netflix.data.pojo.Items;
-import com.example.netflix.ui.auth.WatchNowActivity;
+import com.example.netflix.data.room.DatabaseCallback;
+import com.example.netflix.data.room.entities.FavoriteMovies;
+import com.example.netflix.ui.auth.fragments.FavoriteFragment;
 import com.example.netflix.util.ByteUtility;
-import com.squareup.picasso.Picasso;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class FavoriteItemsAdapter extends ArrayAdapter<Items> {
+public class FavoriteItemsAdapter extends RecyclerView.Adapter<FavoriteItemsViewHolder> {
 
-    List<Items> items;
+    List<FavoriteMovies> items;
 
-    public FavoriteItemsAdapter(@NonNull Context context, @NotNull List<Items> countryList) {
-        super(context, 0, countryList);
-        items = new ArrayList<>(countryList);
+    public FavoriteItemsAdapter(List<FavoriteMovies> items){
+        this.items = items;
     }
+
+    DatabaseCallback databaseCallback = new DatabaseCallback();
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return initView(position,convertView,parent);
+    public FavoriteItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new FavoriteItemsViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.favorite_items_view, parent, false));
     }
 
     @Override
-    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return initView(position,convertView,parent);
+    public void onBindViewHolder(@NonNull FavoriteItemsViewHolder holder, int position) {
+        FavoriteMovies favoriteMovies = items.get(position);
+        holder.movieTitle.setText(favoriteMovies.getMovieTitle());
+        holder.movieImage.setImageBitmap(ByteUtility.getBitmapFromByteArray(favoriteMovies.getImage()));
+        holder.delete.setOnClickListener((view) -> {
+            items.remove(favoriteMovies);
+            if (onMovieDeleted(favoriteMovies)) {
+                this.notifyDataSetChanged();
+                Toast.makeText(view.getContext(), favoriteMovies.getMovieTitle() + " is deleted!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public boolean onMovieDeleted(FavoriteMovies favoriteMovies) {
+        return databaseCallback.deleteFavMovie(FavoriteFragment.databaseHandler, favoriteMovies);
     }
 
 
-    public View initView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-        convertView = LayoutInflater.from(getContext()).inflate(R.layout.favorite_items_view, parent, false);
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
+}
 
-        Items item = getItem(position);
+class FavoriteItemsViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView image = convertView.findViewById(R.id.image);
-        TextView text = convertView.findViewById(R.id.text);
-        TextView delete = convertView.findViewById(R.id.delete);
-        delete.setOnClickListener((view)->{
-            items.remove(item);
-//            onMovieDeleted(item);
-            this.notifyDataSetChanged();
-        });
+    TextView movieTitle, delete;
 
-        if (item != null) {
-            text.setText(item.getMovieTitle());
-            image.setImageBitmap(ByteUtility.getBitmapFromByteArray(item.getImage()));
-        }
-        return convertView;
+    ImageView movieImage;
+
+
+    public FavoriteItemsViewHolder(@NonNull View itemView) {
+        super(itemView);
+
+        movieImage = itemView.findViewById(R.id.image);
+        movieTitle = itemView.findViewById(R.id.title);
+        delete = itemView.findViewById(R.id.delete);
     }
 }

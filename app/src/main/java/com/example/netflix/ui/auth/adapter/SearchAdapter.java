@@ -1,5 +1,6 @@
 package com.example.netflix.ui.auth.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.netflix.R;
+import com.example.netflix.ui.auth.WatchNowActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -32,6 +34,13 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         SearchItem searchItem = searchItemList.get(position);
         searchViewModel.movieTitle.setText(searchItem.getTitle());
         Picasso.get().load(searchItem.getUrl()).into(searchViewModel.movieImage);
+        searchViewModel.movieImage.setOnClickListener((view)->{
+            Intent intent = new Intent(searchItem.getActivity(), WatchNowActivity.class);
+            ChildItem childItem = new ChildItem(searchItem.getTitle(),searchItem.getUrl(),searchItem.getActivity(),searchItem.getId());
+            intent.putExtra(ChildItemAdapter.MOVIE_SELECTED,childItem);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            searchItem.getActivity().startActivity(intent);
+        });
     }
 
     @Override

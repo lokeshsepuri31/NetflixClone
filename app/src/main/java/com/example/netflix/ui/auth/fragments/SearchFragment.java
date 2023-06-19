@@ -27,6 +27,7 @@ import com.example.netflix.ui.auth.adapter.ChildItem;
 import com.example.netflix.ui.auth.adapter.ParentItemAdapter;
 import com.example.netflix.ui.auth.adapter.SearchAdapter;
 import com.example.netflix.ui.auth.adapter.SearchItem;
+import com.example.netflix.util.NetworkReceiverCallback;
 import com.example.netflix.util.PicassoVM;
 
 import java.util.ArrayList;
@@ -104,15 +105,10 @@ public class SearchFragment extends Fragment {
         searchVM = new ViewModelProvider(getActivity()).get(SearchVM.class);
         movieListRecyclerView = view.findViewById(R.id.search_recycler_view);
         picassoVM = new ViewModelProvider(getActivity()).get(PicassoVM.class);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         search_movies.requestFocus();
         search_movies.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (actionId == EditorInfo.IME_ACTION_DONE && NetworkReceiverCallback.isConnection(getActivity())) {
                     searchVM.getMovieNameByTitle(search_movies.getText().toString(), new HomeListener<List<Movies>>() {
                         @Override
                         public void onSuccess(List<Movies> response) {
@@ -130,6 +126,8 @@ public class SearchFragment extends Fragment {
                         }
                     });
                     return true;
+                }else{
+                    NetworkReceiverCallback.showSnackbar(search_movies);
                 }
                 return false;
             }
@@ -138,10 +136,13 @@ public class SearchFragment extends Fragment {
 
     public void renderMovieSearch(List<Movies> moviesList){
         this.moviesList = moviesList;
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        SearchAdapter searchAdapter = new SearchAdapter(searchAdapterItems());
-        movieListRecyclerView.setAdapter(searchAdapter);
-        movieListRecyclerView.setLayoutManager(layoutManager);
+        if(moviesList.size() != 0) {
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+            SearchAdapter searchAdapter = new SearchAdapter(searchAdapterItems());
+            movieListRecyclerView.setAdapter(searchAdapter);
+            movieListRecyclerView.setLayoutManager(layoutManager);
+        }else
+            Toast.makeText(getActivity(), "No results found!", Toast.LENGTH_SHORT).show();
     }
 
     public List<SearchItem> searchAdapterItems(){
@@ -151,7 +152,7 @@ public class SearchFragment extends Fragment {
                     && movies.getPrimaryImage().getCaption().getMovieName() != null) {
                 String url = movies.getPrimaryImage().getUrl();
                 String movieName = movies.getOriginalText().getMovieName();
-                searchItemList.add(new SearchItem(movieName,url));
+                searchItemList.add(new SearchItem(movieName,url,getActivity(),movies.getId()));
             }
         }
         return searchItemList;

@@ -12,6 +12,7 @@ import com.example.netflix.data.room.entities.Users;
 import com.example.netflix.ui.auth.WatchNowActivity;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -118,6 +119,46 @@ public class DatabaseCallback {
             Log.e(TAG, e.getMessage());
         }
         return isMovieAlreadyThere;
+    }
+
+    public List<FavoriteMovies> getAllFavoriteMovies(DatabaseHandler databaseHandler,int userId){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Set<Callable<List<FavoriteMovies>>> callables = new HashSet<>();
+        callables.add(new Callable<List<FavoriteMovies>>() {
+            @Override
+            public List<FavoriteMovies> call() throws Exception {
+                return databaseHandler.favoriteMoviesDAO().getAllFavMoviesofLoggedInUser(userId);
+            }
+        });
+        List<FavoriteMovies> favoriteMovies = null;
+        try{
+            favoriteMovies = executorService.invokeAny(callables);
+        }catch (Exception e){
+            Log.e(TAG, e.getMessage());
+        }
+        return  favoriteMovies;
+    }
+
+    public boolean deleteFavMovie(DatabaseHandler databaseHandler,FavoriteMovies favoriteMovies){
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Set<Callable<Boolean>> callables = new HashSet<>();
+        callables.add(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                databaseHandler.favoriteMoviesDAO().deleteFavMovie(favoriteMovies);
+                return true;
+            }
+        });
+
+        Boolean isMovieDeleted = false;
+        try{
+            isMovieDeleted = executorService.invokeAny(callables);
+        }catch (Exception e){
+            Log.e(TAG, e.getMessage());
+        }
+        return isMovieDeleted;
+
     }
 
 }

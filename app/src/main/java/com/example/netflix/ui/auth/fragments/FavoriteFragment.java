@@ -1,32 +1,28 @@
 package com.example.netflix.ui.auth.fragments;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.netflix.R;
-import com.example.netflix.data.pojo.Items;
-import com.example.netflix.ui.auth.WatchNowActivity;
-import com.example.netflix.ui.auth.adapter.ChildItem;
+import com.example.netflix.data.room.DatabaseCallback;
+import com.example.netflix.data.room.DatabaseHandler;
+import com.example.netflix.data.room.entities.FavoriteMovies;
+import com.example.netflix.ui.auth.LoginActivity;
 import com.example.netflix.ui.auth.adapter.FavoriteItemsAdapter;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -46,14 +42,12 @@ public class FavoriteFragment extends Fragment {
     private String mParam2;
 
     SharedPreferences sharedPreferences;
-
-    List<ChildItem> childItem;
-
-    ListView favoriteMovies;
-
-    List<Items> itemsList = new ArrayList<>();
-
+    RecyclerView favoriteMoviesList;
     FavoriteItemsAdapter adapter;
+
+    DatabaseCallback databaseCallback = new DatabaseCallback();
+
+    public static DatabaseHandler databaseHandler;
 
     public FavoriteFragment() {
         // Required empty public constructor
@@ -96,27 +90,23 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        favoriteMovies = view.findViewById(R.id.favorite_movies_list);
-
+        favoriteMoviesList = view.findViewById(R.id.favorite_movies_list);
+        databaseHandler = DatabaseHandler.getInstance(getActivity());
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-
-
-        initializeItems();
-        adapter = new FavoriteItemsAdapter(getContext(), itemsList);
-        favoriteMovies.setAdapter(adapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
+        int userId = sharedPreferences.getInt(LoginActivity.LOGIN_USERID,0);
+        List<FavoriteMovies> favoriteMovies = getFavoriteMovies(userId);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
+        adapter = new FavoriteItemsAdapter(favoriteMovies);
+        favoriteMoviesList.setAdapter(adapter);
+        favoriteMoviesList.setLayoutManager(layoutManager);
     }
 
-    public void initializeItems(){
-//        for(ChildItem childItem1: childItem){
-//            itemsList.add(new Items(childItem1.getId(),childItem1.getChildItemTitle(),childItem1));
-//        }
+    public List<FavoriteMovies> getFavoriteMovies(int userId){
+        return databaseCallback.getAllFavoriteMovies(databaseHandler,userId);
     }
 }

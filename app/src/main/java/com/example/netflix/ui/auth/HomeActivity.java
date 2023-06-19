@@ -25,11 +25,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class HomeActivity extends AppCompatActivity implements  BottomNavigationView.OnNavigationItemSelectedListener {
     ViewPager2 viewPager2;
 
-    BottomNavigationView bottomNavigationView;
+    static BottomNavigationView bottomNavigationView;
 
     FragmentAdapter fragmentAdapter;
-
-
     public static final int HOME_POSITION = 0;
     public static final int SEARCH_POSITION = 1;
     public static final int FAVORITE_POSITION = 2;
@@ -64,7 +62,7 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
         getSupportActionBar().hide();
     }
 
-    private void selectBottomNavigationViewMenuItem(int id) {
+    public static void selectBottomNavigationViewMenuItem(int id) {
         switch (id) {
             case SEARCH_POSITION:
                 bottomNavigationView.setSelectedItemId(R.id.search);
@@ -99,6 +97,8 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
         }
         return true;
     }
+
+
 
     @Override
     public void onBackPressed() {
