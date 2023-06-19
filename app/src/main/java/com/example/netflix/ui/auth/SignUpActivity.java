@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.netflix.R;
@@ -29,6 +30,8 @@ public class SignUpActivity extends AppCompatActivity implements LoginListener{
     TextInputLayout emailLayout,passwordLayout,rePasswordLayout;
     SignUpVM signUpVM;
 
+    TextView signIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,11 @@ public class SignUpActivity extends AppCompatActivity implements LoginListener{
         emailLayout = findViewById(R.id.email);
         passwordLayout = findViewById(R.id.password);
         rePasswordLayout = findViewById(R.id.repassword);
+        signIn = findViewById(R.id.signIn);
+
+        signIn.setOnClickListener((view)->{
+            onBackPressed();
+        });
 
         password = passwordLayout.getEditText();
         email = emailLayout.getEditText();

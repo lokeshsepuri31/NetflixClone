@@ -104,6 +104,7 @@ public class FavoriteFragment extends Fragment {
         adapter = new FavoriteItemsAdapter(favoriteMovies);
         favoriteMoviesList.setAdapter(adapter);
         favoriteMoviesList.setLayoutManager(layoutManager);
+        adapter.notifyDataSetChanged();
     }
 
     public List<FavoriteMovies> getFavoriteMovies(int userId){

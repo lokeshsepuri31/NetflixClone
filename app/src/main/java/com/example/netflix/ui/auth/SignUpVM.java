@@ -1,6 +1,7 @@
 package com.example.netflix.ui.auth;
 
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModel;
 
@@ -28,8 +29,12 @@ public class SignUpVM extends ViewModel {
         } else{
             if(NetworkReceiverCallback.isConnection(view.getContext())){
                 String[] emailSplitArray = email.split("@");
-                if (databaseCallback.signUp(databaseHandler,new Users(email,password,emailSplitArray[0])))
-                    loginListener.onSuccess();
+                if(databaseCallback.getUserIdByUsername(databaseHandler,emailSplitArray[0]) == 0) {
+                    if (databaseCallback.signUp(databaseHandler, new Users(email, password, emailSplitArray[0])))
+                        loginListener.onSuccess();
+                }else{
+                    loginListener.onFailure("This email already exists!");
+                }
             }else{
                 loginListener.onNetworkError();
             }
