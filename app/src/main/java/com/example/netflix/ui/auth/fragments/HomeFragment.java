@@ -100,7 +100,8 @@ public class HomeFragment extends Fragment {
         parentRecyclerViewItem = view.findViewById(R.id.recycler_view);
         homeVM = new ViewModelProvider(getActivity()).get(HomeVM.class);
         progressBar = view.findViewById(R.id.progress_bar);
-        getMovies();
+        if(upcomingMovies == null)
+            getMovies();
     }
 
     public void getMovies(){
