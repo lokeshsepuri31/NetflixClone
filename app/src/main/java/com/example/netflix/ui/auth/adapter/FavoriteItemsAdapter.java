@@ -43,7 +43,7 @@ public class FavoriteItemsAdapter extends RecyclerView.Adapter<FavoriteItemsView
             items.remove(favoriteMovies);
             if (onMovieDeleted(favoriteMovies)) {
                 this.notifyDataSetChanged();
-                Toast.makeText(view.getContext(), favoriteMovies.getMovieTitle() + " is deleted!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), favoriteMovies.getMovieTitle() + " is removed from favorites!", Toast.LENGTH_SHORT).show();
             }
         });
     }

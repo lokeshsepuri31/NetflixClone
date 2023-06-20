@@ -83,7 +83,7 @@ public class WatchNowActivity extends AppCompatActivity {
                 Toast.makeText(this, favoriteMovies.getMovieTitle() + " is added to favorites.", Toast.LENGTH_SHORT).show();
             }
         }else{
-            Toast.makeText(this, "It is already added to favorites!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, watchNowMovie.getChildItemTitle()+" is already in your favorites.", Toast.LENGTH_SHORT).show();
         }
     }
 
