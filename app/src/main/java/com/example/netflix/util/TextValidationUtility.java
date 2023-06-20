@@ -11,13 +11,14 @@ public class TextValidationUtility {
         return matcher.find() ? true : false;
     }
 
-    public static boolean passwordValidation(String password){
+    public static boolean passwordSpecialCharacterValidation(String password){
         Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
         Matcher matcher = pattern.matcher(password);
-        boolean validPassword = matcher.find();
-        if (password.length() > 8 && password.length() < 12 && validPassword)
-            return true;
-        else return false;
+        return matcher.find();
+    }
+
+    public static boolean passwordLengthValidation(String password){
+        return password.length() >=8 && password.length() <= 12;
     }
 
     public static boolean isBothPasswordsEqual(String password,String rePassword){

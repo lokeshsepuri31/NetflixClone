@@ -87,11 +87,14 @@ public class SignUpActivity extends AppCompatActivity implements LoginListener{
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                if (TextValidationUtility.passwordValidation(password.getText().toString())){
-                    passwordLayout.setError(null);
+                if (TextValidationUtility.passwordSpecialCharacterValidation(password.getText().toString())){
+                    if(TextValidationUtility.passwordLengthValidation(password.getText().toString())){
+                        passwordLayout.setError(null);
+                    }else{
+                        passwordLayout.setError("Length of password should be between 8 and 12 characters.");
+                    }
                 }else{
-                    passwordLayout.setError("Password should contains special characters and length should be between 8 and 12");
+                    passwordLayout.setError("Password should contain atleast one special character.");
                 }
 
             }

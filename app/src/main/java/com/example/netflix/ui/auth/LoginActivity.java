@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
 
     TextView signup;
 
-    TextInputLayout password;
+    TextInputLayout username,password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         });
 
         password = findViewById(R.id.password);
+        username = findViewById(R.id.username);
 
         if (isLogin) {
             startActivity(new Intent(this, HomeActivity.class));
@@ -68,8 +69,16 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
 
     @Override
     public void onFailure(String message) {
-        password.setError(message);
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if(password.getEditText().getText().toString().isEmpty() && !username.getEditText().getText().toString().isEmpty()) {
+            password.setError(message);
+            username.setError(null);
+        }
+        else if(username.getEditText().getText().toString().isEmpty() && !password.getEditText().getText().toString().isEmpty()) {
+            username.setError(message);
+            password.setError(null);
+        }
+        else
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

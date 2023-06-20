@@ -10,6 +10,8 @@ import com.example.netflix.data.room.entities.Users;
 import com.example.netflix.util.NetworkReceiverCallback;
 import com.example.netflix.util.TextValidationUtility;
 
+import java.util.Locale;
+
 public class LoginVM extends ViewModel {
 
     public String username = "", password = "";
@@ -24,17 +26,25 @@ public class LoginVM extends ViewModel {
     private DatabaseCallback databaseCallback = new DatabaseCallback();
 
     public void onLogin(View view) {
-        if (username.isEmpty() || password.isEmpty()) {
-            loginListener.onFailure("Please provide the Username or Password");
+        if (username.isEmpty() && !password.isEmpty()) {
+            loginListener.onFailure("Please provide the Username");
+            return;
+        }else if (password.isEmpty() && !username.isEmpty()) {
+            loginListener.onFailure("Please provide the Password");
+            return;
+        } else if (username.isEmpty() && password.isEmpty()) {
+            loginListener.onFailure("Please provide Username and Password");
             return;
         } else {
             if (NetworkReceiverCallback.isConnection(view.getContext())) {
+                username = username.toLowerCase(Locale.ROOT);
                 Users users = databaseCallback.logIn(databaseHandler, username);
-                userId = users.getId();
-                if (users != null && users.getPassword().equals(password))
+                if (users != null && users.getPassword().equals(password)) {
+                    userId = users.getId();
                     loginListener.onSuccess();
+                }
                 else
-                    loginListener.onFailure("Username or Password Incorrect !");
+                    loginListener.onFailure("Username or Password Incorrect!");
             } else
                 loginListener.onNetworkError();
         }

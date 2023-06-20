@@ -26,7 +26,7 @@ import com.squareup.picasso.Picasso;
 
 public class WatchNowActivity extends AppCompatActivity {
 
-    TextView title;
+    TextView title,description;
     ImageView movieImage;
 
     Button share,favorite;
@@ -46,6 +46,7 @@ public class WatchNowActivity extends AppCompatActivity {
         setContentView(R.layout.activity_watch_now);
         watchNowMovie = getIntent().getExtras().getParcelable(ChildItemAdapter.MOVIE_SELECTED);
         title = findViewById(R.id.child_item_title);
+        description = findViewById(R.id.description);
         movieImage = findViewById(R.id.img_child_item);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         share = findViewById(R.id.share);

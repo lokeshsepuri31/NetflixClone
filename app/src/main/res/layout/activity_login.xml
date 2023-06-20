@@ -28,7 +28,7 @@
         <LinearLayout
             android:id="@+id/login_details"
             android:layout_width="match_parent"
-            android:layout_height="340dp"
+            android:layout_height="360dp"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -38,6 +38,7 @@
             app:layout_constraintVertical_bias="0.62">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/username"
                 style="@style/Widget.App.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,7 +46,6 @@
                 android:layout_margin="15dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/profile_selector"

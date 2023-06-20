@@ -86,7 +86,7 @@
                 style="@style/Widget.App.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/re_password"
+                android:hint="@string/confirm_password"
                 android:layout_margin="15dp"
                 app:endIconMode = "password_toggle">
 
