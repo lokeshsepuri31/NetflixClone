@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.CursorWindow;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ import com.example.netflix.ui.auth.fragments.ProfileFragment;
 import com.example.netflix.ui.auth.fragments.SearchFragment;
 import com.example.netflix.util.NetworkReceiverCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.lang.reflect.Field;
 
 public class HomeActivity extends AppCompatActivity implements  BottomNavigationView.OnNavigationItemSelectedListener {
     ViewPager2 viewPager2;
@@ -59,6 +62,15 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
                 selectBottomNavigationViewMenuItem(position);
             }
         });
+
+//        try {
+//            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+//            field.setAccessible(true);
+//            field.set(null, 100 * 1024 * 1024);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         getSupportActionBar().hide();
     }
 

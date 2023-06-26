@@ -8,7 +8,6 @@ import com.example.netflix.data.room.DatabaseCallback;
 import com.example.netflix.data.room.DatabaseHandler;
 import com.example.netflix.data.room.entities.Users;
 import com.example.netflix.util.NetworkReceiverCallback;
-import com.example.netflix.util.TextValidationUtility;
 
 import java.util.Locale;
 

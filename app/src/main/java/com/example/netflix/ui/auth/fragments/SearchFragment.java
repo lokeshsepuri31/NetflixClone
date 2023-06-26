@@ -109,24 +109,27 @@ public class SearchFragment extends Fragment {
         search_movies.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE && NetworkReceiverCallback.isConnection(getActivity())) {
-                    searchVM.getMovieNameByTitle(search_movies.getText().toString(), new HomeListener<List<Movies>>() {
-                        @Override
-                        public void onSuccess(List<Movies> response) {
-                            renderMovieSearch(response);
-                        }
+                    if (!search_movies.getText().toString().equals(""))
+                        searchVM.getMovieNameByTitle(search_movies.getText().toString(), new HomeListener<List<Movies>>() {
+                            @Override
+                            public void onSuccess(List<Movies> response) {
+                                renderMovieSearch(response);
+                            }
 
-                        @Override
-                        public void onFailure(int statusCode, String response) {
-                            Toast.makeText(getActivity(), "No Search result found!", Toast.LENGTH_SHORT).show();
-                        }
+                            @Override
+                            public void onFailure(int statusCode, String response) {
+                                Toast.makeText(getActivity(), "No Search result found!", Toast.LENGTH_SHORT).show();
+                            }
 
-                        @Override
-                        public void onError(Request request, Exception e) {
+                            @Override
+                            public void onError(Request request, Exception e) {
 
-                        }
-                    });
+                            }
+                        });
+                    else
+                        Toast.makeText(getActivity(), "Please provide a movie name!", Toast.LENGTH_SHORT).show();
                     return true;
-                }else{
+                } else {
                     NetworkReceiverCallback.showSnackbar(search_movies);
                 }
                 return false;
@@ -134,25 +137,25 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    public void renderMovieSearch(List<Movies> moviesList){
+    public void renderMovieSearch(List<Movies> moviesList) {
         this.moviesList = moviesList;
-        if(moviesList.size() != 0) {
+        if (moviesList.size() != 0) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
             SearchAdapter searchAdapter = new SearchAdapter(searchAdapterItems());
             movieListRecyclerView.setAdapter(searchAdapter);
             movieListRecyclerView.setLayoutManager(layoutManager);
-        }else
+        } else
             Toast.makeText(getActivity(), "No results found!", Toast.LENGTH_SHORT).show();
     }
 
-    public List<SearchItem> searchAdapterItems(){
+    public List<SearchItem> searchAdapterItems() {
         List<SearchItem> searchItemList = new ArrayList<>();
         for (Movies movies : moviesList) {
             if (movies.getPrimaryImage() != null && movies.getPrimaryImage().getUrl() != null
                     && movies.getPrimaryImage().getCaption().getMovieName() != null) {
                 String url = movies.getPrimaryImage().getUrl();
                 String movieName = movies.getOriginalText().getMovieName();
-                searchItemList.add(new SearchItem(movieName,url,getActivity(),movies.getId()));
+                searchItemList.add(new SearchItem(movieName, url, getActivity(), movies.getId()));
             }
         }
         return searchItemList;

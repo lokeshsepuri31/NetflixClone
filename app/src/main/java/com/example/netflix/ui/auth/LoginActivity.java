@@ -1,21 +1,38 @@
 package com.example.netflix.ui.auth;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.netflix.R;
 import com.example.netflix.data.room.DatabaseHandler;
+import com.example.netflix.util.GoogleClient;
 import com.example.netflix.util.NetworkReceiverCallback;
 import com.example.netflix.databinding.ActivityLoginBinding;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginActivity extends AppCompatActivity implements LoginListener {
@@ -30,6 +47,8 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
     TextView signup;
 
     TextInputLayout username,password;
+
+    ActivityResultLauncher<Intent> launcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         signup.setOnClickListener((view) -> {
             onSignUp(view);
         });
+        setLauncher();
 
         password = findViewById(R.id.password);
         username = findViewById(R.id.username);
@@ -56,6 +76,25 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
             startActivity(new Intent(this, HomeActivity.class));
         }
         getWindow().setStatusBarColor(getResources().getColor(R.color.black));
+    }
+
+    private void setLauncher(){
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == 0){
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                    try{
+//                        GoogleSignInAccount
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+                else {
+                    Toast.makeText(LoginActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -101,5 +140,11 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
             startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(startMain);
         }
+    }
+
+    public void onSignIn(View view){
+        GoogleSignInClient gsc = GoogleClient.getClient(this);
+        Intent signInIntent = gsc.getSignInIntent();
+        launcher.launch(signInIntent);
     }
 }
