@@ -108,7 +108,6 @@ public class FavoriteFragment extends Fragment {
         favoriteMoviesList.setAdapter(adapter);
         favoriteMoviesList.setLayoutManager(layoutManager);
         adapter.notifyDataSetChanged();
-        System.out.println("onResume: "+getClass());
     }
 
     public List<FavoriteMovies> getFavoriteMovies(int userId){
