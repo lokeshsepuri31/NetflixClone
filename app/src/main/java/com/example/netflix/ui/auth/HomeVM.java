@@ -16,11 +16,11 @@ import retrofit2.Response;
 
 public class HomeVM extends ViewModel {
 
-    List<Movies> moviesList;
+    public List<Movies> moviesList;
 
     List<Movies> upcomingMovies;
 
-    List<Movies> series;
+    public String example;
 
     List<String> movieIds = new ArrayList<>();
     MoviesInterface moviesInterface = RetrofitClient.getClient().create(MoviesInterface.class);

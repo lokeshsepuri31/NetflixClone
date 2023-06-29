@@ -4,12 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.CursorWindow;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -20,15 +16,17 @@ import com.example.netflix.ui.auth.fragments.FavoriteFragment;
 import com.example.netflix.ui.auth.fragments.HomeFragment;
 import com.example.netflix.ui.auth.fragments.ProfileFragment;
 import com.example.netflix.ui.auth.fragments.SearchFragment;
-import com.example.netflix.util.NetworkReceiverCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.lang.reflect.Field;
+import java.time.Duration;
+import java.time.Instant;
 
-public class HomeActivity extends AppCompatActivity implements  BottomNavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     ViewPager2 viewPager2;
 
     static BottomNavigationView bottomNavigationView;
+
+    Instant startTime;
 
     FragmentAdapter fragmentAdapter;
     public static final int HOME_POSITION = 0;
@@ -63,14 +61,6 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
             }
         });
 
-//        try {
-//            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
-//            field.setAccessible(true);
-//            field.set(null, 100 * 1024 * 1024);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         getSupportActionBar().hide();
     }
 
@@ -93,7 +83,7 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.search:
                 viewPager2.setCurrentItem(SEARCH_POSITION);
                 break;
@@ -111,18 +101,26 @@ public class HomeActivity extends AppCompatActivity implements  BottomNavigation
     }
 
 
-
     @Override
     public void onBackPressed() {
-        if(backCounts == 0){
-            Toast.makeText(this, "If you want to exit, Press back again!", Toast.LENGTH_SHORT).show();
-            backCounts++;
-        }
-        else{
-            Intent startMain = new Intent(Intent.ACTION_MAIN);
-            startMain.addCategory(Intent.CATEGORY_HOME);
-            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(startMain);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Instant endTime = Instant.now();
+            if(startTime == null){
+                startTime = Instant.now();
+                Toast.makeText(this, "If you want to exit back press again!", Toast.LENGTH_SHORT).show();
+            }else {
+                Duration duration = Duration.between(startTime, endTime);
+                if(duration.toMillis() < 10000){
+                    Intent startMain = new Intent(Intent.ACTION_MAIN);
+                    startMain.addCategory(Intent.CATEGORY_HOME);
+                    startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(startMain);
+                }else {
+                    startTime = endTime;
+                    Toast.makeText(this, "If you want to exit back press again!", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 }

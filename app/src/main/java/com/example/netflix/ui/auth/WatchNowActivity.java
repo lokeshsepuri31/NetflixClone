@@ -3,10 +3,14 @@ package com.example.netflix.ui.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.Button;
@@ -20,7 +24,9 @@ import com.example.netflix.data.room.DatabaseHandler;
 import com.example.netflix.data.room.entities.FavoriteMovies;
 import com.example.netflix.ui.auth.adapter.ChildItem;
 import com.example.netflix.ui.auth.adapter.ChildItemAdapter;
+import com.example.netflix.ui.auth.adapter.FavoriteItemsAdapter;
 import com.example.netflix.util.ByteUtility;
+import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
 
@@ -29,7 +35,9 @@ public class WatchNowActivity extends AppCompatActivity {
     TextView title,description;
     ImageView movieImage;
 
-    Button share,favorite;
+    Button share;
+
+    MaterialButton favoriteLayout;
 
     ChildItem watchNowMovie;
 
@@ -38,6 +46,10 @@ public class WatchNowActivity extends AppCompatActivity {
     DatabaseCallback databaseCallback = new DatabaseCallback();
 
     DatabaseHandler databaseHandler;
+
+    boolean isMovieAlreadyInDB;
+
+    int userId;
 
 
     @Override
@@ -50,10 +62,9 @@ public class WatchNowActivity extends AppCompatActivity {
         movieImage = findViewById(R.id.img_child_item);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         share = findViewById(R.id.share);
-        favorite = findViewById(R.id.favorite_movies);
+        favoriteLayout = findViewById(R.id.favorite_movies);
 
         databaseHandler = DatabaseHandler.getInstance(this);
-
         share.setOnClickListener((view)->{
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
@@ -62,28 +73,41 @@ public class WatchNowActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        userId = sharedPreferences.getInt(LoginActivity.LOGIN_USERID,0);
+        isMovieAlreadyInDB = databaseCallback.isFavMovieAlreadyInLoggedInUser(databaseHandler,watchNowMovie.getId(),userId);
+        setColorOfIcon(isMovieAlreadyInDB);
+
         title.setText(watchNowMovie.getChildItemTitle());
         Picasso.get().load(watchNowMovie.getUrl()).into(movieImage);
-        favorite.setOnClickListener((view)->{
+        favoriteLayout.setOnClickListener((view)->{
             addToFavorites();
         });
+
         getSupportActionBar().hide();
     }
 
+    public void setColorOfIcon(boolean isMovieAlreadyInDB){
+        if(isMovieAlreadyInDB)
+            favoriteLayout.setIconTint(ColorStateList.valueOf(Color.parseColor("#FD011F")));
+        else
+            favoriteLayout.setIconTint(ColorStateList.valueOf(Color.parseColor("#FFFFFFFF")));
+    }
+
     public void addToFavorites(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int userId = sharedPreferences.getInt(LoginActivity.LOGIN_USERID,0);
         Bitmap bitmap = ((BitmapDrawable)movieImage.getDrawable()).getBitmap();
         byte[] image = ByteUtility.getBitmapAsByteArray(bitmap);
-        boolean isMovieAlreadyInDB = databaseCallback.isFavMovieAlreadyInLoggedInUser(databaseHandler,watchNowMovie.getId(),userId);
+        isMovieAlreadyInDB = databaseCallback.isFavMovieAlreadyInLoggedInUser(databaseHandler,watchNowMovie.getId(),userId);
         if(!isMovieAlreadyInDB) {
             FavoriteMovies favoriteMovies = new FavoriteMovies(userId,watchNowMovie.getId(),image,watchNowMovie.getChildItemTitle());
-            boolean addedMovie = databaseCallback.addFavMovie(databaseHandler, favoriteMovies);
-            if (addedMovie) {
+            if (databaseCallback.addFavMovie(databaseHandler, favoriteMovies)) {
+                setColorOfIcon(true);
                 Toast.makeText(this, favoriteMovies.getMovieTitle() + " is added to favorites.", Toast.LENGTH_SHORT).show();
             }
-        }else{
-            Toast.makeText(this, watchNowMovie.getChildItemTitle()+" is already in your favorites.", Toast.LENGTH_SHORT).show();
+        }else {
+            if (databaseCallback.deleteFavMovie(databaseHandler,userId, watchNowMovie.getId())) {
+                setColorOfIcon(false);
+                Toast.makeText(this, watchNowMovie.getChildItemTitle() + " is removed from your favorites.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

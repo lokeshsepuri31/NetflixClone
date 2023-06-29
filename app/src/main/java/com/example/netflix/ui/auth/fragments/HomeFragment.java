@@ -23,18 +23,13 @@ import com.example.netflix.ui.auth.HomeVM;
 import com.example.netflix.ui.auth.adapter.ChildItem;
 import com.example.netflix.ui.auth.adapter.ParentItem;
 import com.example.netflix.ui.auth.adapter.ParentItemAdapter;
+import com.example.netflix.util.NetworkCallbackAbstract;
 import com.example.netflix.util.NetworkReceiverCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Request;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HomeFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -54,27 +49,11 @@ public class HomeFragment extends Fragment {
 
     ProgressBar progressBar;
 
+    NetworkCallbackAbstract networkCallbackAbstract;
+
 
     public HomeFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -84,6 +63,25 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        if(homeVM == null)
+            homeVM = new ViewModelProvider(getActivity()).get(HomeVM.class);
+
+        networkCallbackAbstract = new NetworkCallbackAbstract(getActivity()) {
+            @Override
+            public void onSuccess() {
+                if(homeVM.moviesList == null)
+                    getMovies();
+                else
+                    renderMovies(homeVM.moviesList);
+            }
+
+            @Override
+            public void onFailure(String message) {
+                showSnackbar(parentRecyclerViewItem,message);
+            }
+        };
+
+        networkCallbackAbstract.register(networkCallbackAbstract);
     }
 
     @Override
@@ -98,10 +96,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         parentRecyclerViewItem = view.findViewById(R.id.recycler_view);
-        homeVM = new ViewModelProvider(getActivity()).get(HomeVM.class);
         progressBar = view.findViewById(R.id.progress_bar);
-        if(upcomingMovies == null)
-            getMovies();
     }
 
     public void getMovies(){
@@ -154,14 +149,21 @@ public class HomeFragment extends Fragment {
         return childItemList;
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if(!NetworkReceiverCallback.isConnection(getActivity()) && homeVM.moviesList == null){
+//            NetworkReceiverCallback.showSnackbar(parentRecyclerViewItem);
+//            HomeActivity.selectBottomNavigationViewMenuItem(HomeActivity.FAVORITE_POSITION);
+//        } else if (NetworkReceiverCallback.isConnection(getActivity()) && homeVM.moviesList == null) {
+//            getMovies();
+//        }
+//    }
+
+
     @Override
-    public void onResume() {
-        super.onResume();
-        if(!NetworkReceiverCallback.isConnection(getActivity()) && upcomingMovies == null){
-            NetworkReceiverCallback.showSnackbar(parentRecyclerViewItem);
-            HomeActivity.selectBottomNavigationViewMenuItem(HomeActivity.FAVORITE_POSITION);
-        } else if (NetworkReceiverCallback.isConnection(getActivity()) && upcomingMovies == null) {
-            getMovies();
-        }
+    public void onStop() {
+        super.onStop();
+        networkCallbackAbstract.unRegister(networkCallbackAbstract);
     }
 }

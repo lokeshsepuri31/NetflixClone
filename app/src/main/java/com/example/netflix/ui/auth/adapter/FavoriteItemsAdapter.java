@@ -25,7 +25,7 @@ public class FavoriteItemsAdapter extends RecyclerView.Adapter<FavoriteItemsView
         this.items = items;
     }
 
-    DatabaseCallback databaseCallback = new DatabaseCallback();
+    static DatabaseCallback databaseCallback = new DatabaseCallback();
 
     @NonNull
     @Override
@@ -48,8 +48,8 @@ public class FavoriteItemsAdapter extends RecyclerView.Adapter<FavoriteItemsView
         });
     }
 
-    public boolean onMovieDeleted(FavoriteMovies favoriteMovies) {
-        return databaseCallback.deleteFavMovie(FavoriteFragment.databaseHandler, favoriteMovies);
+    public static boolean onMovieDeleted(FavoriteMovies favoriteMovies) {
+        return databaseCallback.deleteFavMovie(FavoriteFragment.databaseHandler, favoriteMovies.getUserId(),favoriteMovies.getId());
     }
 
 

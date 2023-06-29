@@ -1,5 +1,7 @@
 package com.example.netflix.ui.auth.fragments;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,6 +108,7 @@ public class FavoriteFragment extends Fragment {
         favoriteMoviesList.setAdapter(adapter);
         favoriteMoviesList.setLayoutManager(layoutManager);
         adapter.notifyDataSetChanged();
+        System.out.println("onResume: "+getClass());
     }
 
     public List<FavoriteMovies> getFavoriteMovies(int userId){

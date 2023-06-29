@@ -139,15 +139,14 @@ public class DatabaseCallback {
         return  favoriteMovies;
     }
 
-    public boolean deleteFavMovie(DatabaseHandler databaseHandler,FavoriteMovies favoriteMovies){
+    public boolean deleteFavMovie(DatabaseHandler databaseHandler,int userId,String id){
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Set<Callable<Boolean>> callables = new HashSet<>();
         callables.add(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                databaseHandler.favoriteMoviesDAO().deleteFavMovie(favoriteMovies);
-                return true;
+                return databaseHandler.favoriteMoviesDAO().deleteFavMovie(userId,id) > 0;
             }
         });
 

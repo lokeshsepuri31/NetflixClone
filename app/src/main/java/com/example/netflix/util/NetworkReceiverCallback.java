@@ -23,6 +23,8 @@ public class NetworkReceiverCallback {
         return isConnected;
     }
 
+
+
     public static void showSnackbar(View view){
         Snackbar snackbar = Snackbar.make(view, "No Internet Connection", Snackbar.LENGTH_LONG);
         View v = snackbar.getView();
