@@ -23,12 +23,9 @@ import com.example.netflix.R;
 import com.example.netflix.data.pojo.Movies;
 import com.example.netflix.ui.auth.HomeListener;
 import com.example.netflix.ui.auth.SearchVM;
-import com.example.netflix.ui.auth.adapter.ChildItem;
-import com.example.netflix.ui.auth.adapter.ParentItemAdapter;
 import com.example.netflix.ui.auth.adapter.SearchAdapter;
 import com.example.netflix.ui.auth.adapter.SearchItem;
 import com.example.netflix.util.NetworkReceiverCallback;
-import com.example.netflix.util.PicassoVM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +55,6 @@ public class SearchFragment extends Fragment {
 
     List<Movies> moviesList;
 
-    PicassoVM picassoVM;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -104,7 +100,6 @@ public class SearchFragment extends Fragment {
         search_movies = view.findViewById(R.id.search_movies);
         searchVM = new ViewModelProvider(getActivity()).get(SearchVM.class);
         movieListRecyclerView = view.findViewById(R.id.search_recycler_view);
-        picassoVM = new ViewModelProvider(getActivity()).get(PicassoVM.class);
         search_movies.requestFocus();
         search_movies.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
