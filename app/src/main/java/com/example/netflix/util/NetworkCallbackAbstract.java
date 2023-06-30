@@ -1,6 +1,5 @@
 package com.example.netflix.util;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,8 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
-import android.os.Build;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 

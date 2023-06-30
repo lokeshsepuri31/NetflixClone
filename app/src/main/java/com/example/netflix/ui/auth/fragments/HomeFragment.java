@@ -65,6 +65,20 @@ public class HomeFragment extends Fragment {
         }
         if(homeVM == null)
             homeVM = new ViewModelProvider(getActivity()).get(HomeVM.class);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        parentRecyclerViewItem = view.findViewById(R.id.recycler_view);
+        progressBar = view.findViewById(R.id.progress_bar);
 
         networkCallbackAbstract = new NetworkCallbackAbstract(getActivity()) {
             @Override
@@ -82,21 +96,6 @@ public class HomeFragment extends Fragment {
         };
 
         networkCallbackAbstract.register(networkCallbackAbstract);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        parentRecyclerViewItem = view.findViewById(R.id.recycler_view);
-        progressBar = view.findViewById(R.id.progress_bar);
     }
 
     public void getMovies(){

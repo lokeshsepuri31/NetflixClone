@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
+import android.database.CursorWindow;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import com.example.netflix.ui.auth.fragments.ProfileFragment;
 import com.example.netflix.ui.auth.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -60,6 +62,14 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 selectBottomNavigationViewMenuItem(position);
             }
         });
+
+        try {
+            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+            field.setAccessible(true);
+            field.set(null, 100 * 1024 * 1024); //the 100MB is the new size
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         getSupportActionBar().hide();
     }

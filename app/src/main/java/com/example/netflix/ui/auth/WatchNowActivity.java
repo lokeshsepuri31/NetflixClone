@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -111,4 +112,7 @@ public class WatchNowActivity extends AppCompatActivity {
         }
     }
 
+    public void onBack(View view){
+        onBackPressed();
+    }
 }
