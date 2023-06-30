@@ -148,17 +148,6 @@ public class HomeFragment extends Fragment {
         return childItemList;
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        if(!NetworkReceiverCallback.isConnection(getActivity()) && homeVM.moviesList == null){
-//            NetworkReceiverCallback.showSnackbar(parentRecyclerViewItem);
-//            HomeActivity.selectBottomNavigationViewMenuItem(HomeActivity.FAVORITE_POSITION);
-//        } else if (NetworkReceiverCallback.isConnection(getActivity()) && homeVM.moviesList == null) {
-//            getMovies();
-//        }
-//    }
-
 
     @Override
     public void onStop() {

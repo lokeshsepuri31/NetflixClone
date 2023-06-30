@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -15,8 +16,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,7 +37,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.time.Duration;
+import java.time.Instant;
 
 public class LoginActivity extends AppCompatActivity implements LoginListener {
 
@@ -41,9 +49,7 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
     public static final String LOGIN_USERNAME = "loggedInUsername";
     public static final String LOGIN_USERID = "loggedInUserId";
     LoginVM loginVM;
-
-    int backCounts = 0;
-
+    Instant startTime;
     TextView signup;
 
     TextInputLayout username,password;
@@ -72,8 +78,51 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         password = findViewById(R.id.password);
         username = findViewById(R.id.username);
 
+        password.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!password.getEditText().getText().toString().isEmpty()){
+                    password.setError(null);
+                }else
+                    password.setError("Please provide the Password");
+            }
+        });
+
+        username.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!username.getEditText().getText().toString().isEmpty()){
+                    username.setError(null);
+                }else
+                    username.setError("Please provide the Username");
+            }
+        });
+
+
         if (isLogin) {
-            startActivity(new Intent(this, HomeActivity.class));
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
         }
         getWindow().setStatusBarColor(getResources().getColor(R.color.black));
     }
@@ -108,15 +157,6 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
 
     @Override
     public void onFailure(String message) {
-        if(password.getEditText().getText().toString().isEmpty() && !username.getEditText().getText().toString().isEmpty()) {
-            password.setError(message);
-            username.setError(null);
-        }
-        else if(username.getEditText().getText().toString().isEmpty() && !password.getEditText().getText().toString().isEmpty()) {
-            username.setError(message);
-            password.setError(null);
-        }
-        else
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
@@ -131,14 +171,23 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
 
     @Override
     public void onBackPressed() {
-        if (backCounts == 0) {
-            Toast.makeText(this, "If you want to exit, Press back again!", Toast.LENGTH_SHORT).show();
-            backCounts++;
-        } else {
-            Intent startMain = new Intent(Intent.ACTION_MAIN);
-            startMain.addCategory(Intent.CATEGORY_HOME);
-            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(startMain);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Instant endTime = Instant.now();
+            if(startTime == null){
+                startTime = Instant.now();
+                Toast.makeText(this, "If you want to exit back press again!", Toast.LENGTH_SHORT).show();
+            }else {
+                Duration duration = Duration.between(startTime, endTime);
+                if(duration.toMillis() < 10000){
+                    Intent startMain = new Intent(Intent.ACTION_MAIN);
+                    startMain.addCategory(Intent.CATEGORY_HOME);
+                    startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(startMain);
+                }else {
+                    startTime = endTime;
+                    Toast.makeText(this, "If you want to exit back press again!", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 

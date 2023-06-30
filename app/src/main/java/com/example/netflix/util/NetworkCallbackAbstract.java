@@ -23,7 +23,8 @@ public abstract class NetworkCallbackAbstract extends ConnectivityManager.Networ
         cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         networkRequest = new NetworkRequest.Builder()
                 .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI).build();
+                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                .build();
     }
 
     @Override
