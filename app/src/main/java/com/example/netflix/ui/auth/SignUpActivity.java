@@ -140,7 +140,17 @@ public class SignUpActivity extends AppCompatActivity implements LoginListener{
 
     @Override
     public void onFailure(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if(message.equals("credentials")){
+            emailLayout.setError("Please provide a valid email.");
+            passwordLayout.setError("Please provide a valid password.");
+            rePasswordLayout.setError("Please provide a valid password.");
+        } else if (message.equals("not same")) {
+            rePasswordLayout.setError("Password and Confirm Password are not same");
+        } else if (message.contains("email")) {
+            emailLayout.setError(message);
+        } else {
+            passwordLayout.setError(message);
+        }
     }
 
     @Override

@@ -23,17 +23,17 @@ public class SignUpVM extends ViewModel {
     DatabaseCallback databaseCallback = new DatabaseCallback();
 
     public void onSignUp(View view){
-        if(email.isEmpty()||password.isEmpty()||re_password.isEmpty()){
-            loginListener.onFailure("Please provide all the credentials");
+        if(email.isEmpty() && password.isEmpty() && re_password.isEmpty()){
+            loginListener.onFailure("credentials");
             return;
         } else if (!password.equals(re_password)) {
-            loginListener.onFailure("Password and Confirm Password or not same");
+            loginListener.onFailure("not same");
             return;
         } else if (!TextValidationUtility.emailValidation(email)) {
-            loginListener.onFailure("Provide a valid email.");
+            loginListener.onFailure("Please provide a valid email.");
             return;
         } else if (!TextValidationUtility.passwordLengthValidation(password) && !TextValidationUtility.passwordSpecialCharacterValidation(password)) {
-            loginListener.onFailure("Provide a valid password");
+            loginListener.onFailure("Please provide a valid password");
             return;
         } else{
             if(NetworkReceiverCallback.isConnection(view.getContext())){
