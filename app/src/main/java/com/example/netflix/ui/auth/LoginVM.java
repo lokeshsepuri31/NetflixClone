@@ -29,10 +29,10 @@ public class LoginVM extends ViewModel {
             loginListener.onFailure("both");
             return;
         } else if (password.isEmpty() && !username.isEmpty()) {
-            loginListener.onFailure(" Password");
+            loginListener.onFailure("Please provide the Password");
             return;
         } else if (username.isEmpty() && !password.isEmpty()) {
-            loginListener.onFailure(" Username");
+            loginListener.onFailure("Please provide the Username");
             return;
         } else {
             if (NetworkReceiverCallback.isConnection(view.getContext())) {
