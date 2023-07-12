@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
+import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,29 +26,31 @@ public abstract class NetworkCallbackAbstract extends ConnectivityManager.Networ
                 .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
                 .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
                 .build();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            cm.requestNetwork(networkRequest,this,500);
+        }
     }
 
     @Override
     public void onAvailable(@NonNull Network network) {
-        super.onAvailable(network);
         onSuccess();
     }
 
     @Override
     public void onUnavailable() {
-        super.onUnavailable();
         onFailure("Something went wrong!");
     }
 
     @Override
     public void onLost(@NonNull Network network) {
-        super.onLost(network);
         onFailure("No Internet Connection!");
     }
 
     public abstract void onSuccess();
 
     public abstract void onFailure(String message);
+
 
     public void register(NetworkCallbackAbstract networkCallbackAbstract){
         cm.registerNetworkCallback(this.networkRequest,networkCallbackAbstract);

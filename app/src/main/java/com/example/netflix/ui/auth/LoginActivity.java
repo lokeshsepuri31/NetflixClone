@@ -157,6 +157,15 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
 
     @Override
     public void onFailure(String message) {
+
+        if(message.equals("both")){
+            username.setError("Please provide the Username");
+            password.setError("Please provide the Password");
+        }else if (message.equals(" Password"))
+            password.setError("Please provide the"+message);
+        else if(message.equals(" Username"))
+            username.setError("Please provide the"+message);
+        else
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 

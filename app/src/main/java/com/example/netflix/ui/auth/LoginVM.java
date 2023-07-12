@@ -25,14 +25,14 @@ public class LoginVM extends ViewModel {
     private DatabaseCallback databaseCallback = new DatabaseCallback();
 
     public void onLogin(View view) {
-        if (username.isEmpty() && !password.isEmpty()) {
-            loginListener.onFailure("Please provide the Username");
+        if (username.isEmpty() && password.isEmpty()) {
+            loginListener.onFailure("both");
             return;
-        }else if (password.isEmpty() && !username.isEmpty()) {
-            loginListener.onFailure("Please provide the Password");
+        } else if (password.isEmpty() && !username.isEmpty()) {
+            loginListener.onFailure(" Password");
             return;
-        } else if (username.isEmpty() && password.isEmpty()) {
-            loginListener.onFailure("Please provide Username and Password");
+        } else if (username.isEmpty() && !password.isEmpty()) {
+            loginListener.onFailure(" Username");
             return;
         } else {
             if (NetworkReceiverCallback.isConnection(view.getContext())) {

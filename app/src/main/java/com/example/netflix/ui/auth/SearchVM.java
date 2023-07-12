@@ -16,7 +16,7 @@ import retrofit2.Response;
 
 public class SearchVM extends ViewModel {
 
-   List<Movies> moviesList;
+   public List<Movies> moviesList;
 
    MoviesInterface moviesInterface = RetrofitClient.getClient().create(MoviesInterface.class);
 

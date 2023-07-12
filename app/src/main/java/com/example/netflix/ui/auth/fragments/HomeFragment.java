@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Request;
+
 public class HomeFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -63,7 +66,7 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        if(homeVM == null)
+        if (homeVM == null)
             homeVM = new ViewModelProvider(getActivity()).get(HomeVM.class);
     }
 
@@ -83,31 +86,51 @@ public class HomeFragment extends Fragment {
         networkCallbackAbstract = new NetworkCallbackAbstract(getActivity()) {
             @Override
             public void onSuccess() {
-                if(homeVM.moviesList == null)
-                    getMovies();
-                else
-                    renderMovies(homeVM.moviesList);
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (homeVM.moviesList == null)
+                            getMovies();
+                        else
+                            renderMovies(homeVM.moviesList);
+                    }
+                });
             }
 
             @Override
             public void onFailure(String message) {
-                showSnackbar(parentRecyclerViewItem,message);
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (homeVM.moviesList != null)
+                            renderMovies(homeVM.moviesList);
+                        showSnackbar(parentRecyclerViewItem, message);
+                    }
+                });
             }
         };
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
         networkCallbackAbstract.register(networkCallbackAbstract);
     }
 
-    public void getMovies(){
+    public void getMovies() {
         homeVM.getMovies(new HomeListener<List<Movies>>() {
             @Override
             public void onSuccess(List<Movies> response) {
                 renderMovies(response);
             }
+
             @Override
             public void onFailure(int statusCode, String response) {
                 Toast.makeText(getActivity(), "" + response, Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onError(Request request, Exception e) {
                 Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -115,7 +138,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public void renderMovies(List<Movies> upcomingMovies){
+    public void renderMovies(List<Movies> upcomingMovies) {
         this.upcomingMovies = upcomingMovies;
         progressBar.setVisibility(View.GONE);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -128,9 +151,9 @@ public class HomeFragment extends Fragment {
         List<ParentItem> itemList = new ArrayList<>();
         ParentItem item = new ParentItem("Movies", childItemList(upcomingMovies));
         itemList.add(item);
-        ParentItem item1 = new ParentItem("Upcoming Movies",childItemList(upcomingMovies));
+        ParentItem item1 = new ParentItem("Upcoming Movies", childItemList(upcomingMovies));
         itemList.add(item1);
-        ParentItem item2 = new ParentItem("Series",childItemList(upcomingMovies));
+        ParentItem item2 = new ParentItem("Series", childItemList(upcomingMovies));
         itemList.add(item2);
         return itemList;
     }
@@ -142,7 +165,7 @@ public class HomeFragment extends Fragment {
                     && movies.getPrimaryImage().getCaption().getMovieName() != null) {
                 String url = movies.getPrimaryImage().getUrl();
                 String movieName = movies.getOriginalText().getMovieName();
-                childItemList.add(new ChildItem(movieName,url,getActivity(),movies.getId()));
+                childItemList.add(new ChildItem(movieName, url, getActivity(), movies.getId()));
             }
         }
         return childItemList;
@@ -150,8 +173,8 @@ public class HomeFragment extends Fragment {
 
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         networkCallbackAbstract.unRegister(networkCallbackAbstract);
     }
 }

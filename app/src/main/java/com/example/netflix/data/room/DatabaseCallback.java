@@ -25,12 +25,7 @@ public class DatabaseCallback {
 
         Set<Callable<Users>> callables = new HashSet<>();
 
-        callables.add(new Callable<Users>() {
-            @Override
-            public Users call() throws Exception {
-                return databaseHandler.usersDAO().getUserByUsername(username);
-            }
-        });
+        callables.add(() -> databaseHandler.usersDAO().getUserByUsername(username));
 
         Users user = null;
         try {
@@ -44,12 +39,9 @@ public class DatabaseCallback {
     public boolean signUp(DatabaseHandler databaseHandler,Users users){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Set<Callable<Boolean>> callables = new HashSet<>();
-        callables.add(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                databaseHandler.usersDAO().insertUser(users);
-                return Boolean.TRUE;
-            }
+        callables.add(() -> {
+            databaseHandler.usersDAO().insertUser(users);
+            return Boolean.TRUE;
         });
         Boolean added = Boolean.FALSE;
         try {
@@ -124,12 +116,7 @@ public class DatabaseCallback {
     public List<FavoriteMovies> getAllFavoriteMovies(DatabaseHandler databaseHandler,int userId){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Set<Callable<List<FavoriteMovies>>> callables = new HashSet<>();
-        callables.add(new Callable<List<FavoriteMovies>>() {
-            @Override
-            public List<FavoriteMovies> call() throws Exception {
-                return databaseHandler.favoriteMoviesDAO().getAllFavMoviesofLoggedInUser(userId);
-            }
-        });
+        callables.add(() -> databaseHandler.favoriteMoviesDAO().getAllFavMoviesofLoggedInUser(userId));
         List<FavoriteMovies> favoriteMovies = null;
         try{
             favoriteMovies = executorService.invokeAny(callables);
