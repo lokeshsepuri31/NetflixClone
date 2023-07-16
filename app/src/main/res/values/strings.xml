@@ -13,4 +13,5 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="network_error">Please check the internet connectivity</string>
     <string name="data">Data</string>
+    <string name="watch_now_image_description">Show the watch now image</string>
 </resources>

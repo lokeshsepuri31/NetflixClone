@@ -46,7 +46,7 @@ public class ChildItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         activity = childItem.getActivity();
         Picasso.get().load(childItem.getUrl())
                 .placeholder(R.mipmap.ic_launcher)
-                .resize(350,460)
+                .resize(350,500)
                 .into(childViewHolder.childImage);
         childViewHolder.childImage.setOnClickListener((v)->{
             if(NetworkReceiverCallback.isConnection(activity))

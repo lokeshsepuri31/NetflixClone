@@ -32,7 +32,7 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
 
         ParentItem parentItem = itemList.get(position);
         parentViewHolder.parentItemTitle.setText(parentItem.getParentItemTitle());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(parentViewHolder.childRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL,position%2 ==0);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(parentViewHolder.childRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
         ChildItemAdapter childItemAdapter = new ChildItemAdapter(parentItem.getChildItemList());
         parentViewHolder.childRecyclerView.setLayoutManager(layoutManager);
         parentViewHolder.childRecyclerView.setAdapter(childItemAdapter);

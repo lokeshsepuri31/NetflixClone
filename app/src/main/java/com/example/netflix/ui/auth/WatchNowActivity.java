@@ -14,13 +14,13 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.netflix.R;
 import com.example.netflix.data.room.DatabaseCallback;
 import com.example.netflix.data.room.DatabaseHandler;
 import com.example.netflix.data.room.entities.FavoriteMovies;
+import com.example.netflix.databinding.ActivityWatchNowBinding;
 import com.example.netflix.ui.auth.adapter.ChildItem;
 import com.example.netflix.ui.auth.adapter.ChildItemAdapter;
 import com.example.netflix.util.ByteUtility;
@@ -29,11 +29,6 @@ import com.squareup.picasso.Picasso;
 
 
 public class WatchNowActivity extends AppCompatActivity {
-
-    TextView title,description;
-    ImageView movieImage;
-
-    Button share;
 
     MaterialButton favoriteLayout;
 
@@ -49,25 +44,26 @@ public class WatchNowActivity extends AppCompatActivity {
 
     int userId;
 
+    ActivityWatchNowBinding binding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_watch_now);
+         binding = ActivityWatchNowBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         watchNowMovie = getIntent().getExtras().getParcelable(ChildItemAdapter.MOVIE_SELECTED);
-        title = findViewById(R.id.child_item_title);
-        description = findViewById(R.id.description);
-        movieImage = findViewById(R.id.img_child_item);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        share = findViewById(R.id.share);
         favoriteLayout = findViewById(R.id.favorite_movies);
 
+        binding.back.setOnClickListener(this::onBack);
+
         databaseHandler = DatabaseHandler.getInstance(this);
-        share.setOnClickListener((view)->{
+        binding.share.setOnClickListener((view)->{
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra("Data",title.getText().toString());
+            intent.putExtra("Data",binding.childItemTitle.getText().toString());
             startActivity(intent);
         });
 
@@ -75,11 +71,9 @@ public class WatchNowActivity extends AppCompatActivity {
         isMovieAlreadyInDB = databaseCallback.isFavMovieAlreadyInLoggedInUser(databaseHandler,watchNowMovie.getId(),userId);
         setColorOfIcon(isMovieAlreadyInDB);
 
-        title.setText(watchNowMovie.getChildItemTitle());
-        Picasso.get().load(watchNowMovie.getUrl()).into(movieImage);
-        favoriteLayout.setOnClickListener((view)->{
-            addToFavorites();
-        });
+        binding.childItemTitle.setText(watchNowMovie.getChildItemTitle());
+        Picasso.get().load(watchNowMovie.getUrl()).into(binding.imgChildItem);
+        favoriteLayout.setOnClickListener(this::addToFavorites);
 
         if(getSupportActionBar() != null)
             getSupportActionBar().hide();
@@ -92,8 +86,8 @@ public class WatchNowActivity extends AppCompatActivity {
             favoriteLayout.setIconTint(ColorStateList.valueOf(Color.parseColor("#FFFFFFFF")));
     }
 
-    public void addToFavorites(){
-        Bitmap bitmap = ((BitmapDrawable)movieImage.getDrawable()).getBitmap();
+    public void addToFavorites(View view){
+        Bitmap bitmap = ((BitmapDrawable)binding.imgChildItem.getDrawable()).getBitmap();
         byte[] image = ByteUtility.getBitmapAsByteArray(bitmap);
         isMovieAlreadyInDB = databaseCallback.isFavMovieAlreadyInLoggedInUser(databaseHandler,watchNowMovie.getId(),userId);
         if(!isMovieAlreadyInDB) {
