@@ -3,11 +3,11 @@ package com.example.netflix.ui.auth.adapter;
 import android.app.Activity;
 
 public class SearchItem{
-    private String title;
+    private final String title;
 
-    private String url,id;
+    private final String url,id;
 
-    private Activity activity;
+    private final Activity activity;
 
     public Activity getActivity() {
         return this.activity;

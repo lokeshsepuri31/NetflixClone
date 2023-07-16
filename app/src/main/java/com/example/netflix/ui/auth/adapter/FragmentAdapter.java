@@ -20,10 +20,6 @@ public class FragmentAdapter extends FragmentStateAdapter {
         fragments.add(fragment);
     }
 
-    public Fragment getFragmentAt(int position){
-        return fragments.get(position);
-    }
-
 
     @NonNull
     @Override

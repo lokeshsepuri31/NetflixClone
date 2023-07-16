@@ -1,6 +1,5 @@
 package com.example.netflix.ui.auth.fragments;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,11 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.example.netflix.R;
 import com.example.netflix.data.room.DatabaseCallback;

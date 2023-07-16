@@ -14,7 +14,7 @@ public class NetworkReceiverCallback {
     public static boolean isConnection(Context context){
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cm.getActiveNetworkInfo();
-        boolean isConnected = false;
+        boolean isConnected;
 
         if ((nInfo != null) && nInfo.isAvailable() && nInfo.isConnected())
             isConnected = true;

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private List<SearchItem> searchItemList;
+    private final List<SearchItem> searchItemList;
 
     public SearchAdapter(List<SearchItem> searchItemList){this.searchItemList = searchItemList;}
 
@@ -48,9 +48,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return searchItemList.size();
     }
 
-    class SearchViewModel extends RecyclerView.ViewHolder{
-        private TextView movieTitle;
-        private ImageView movieImage;
+    static class SearchViewModel extends RecyclerView.ViewHolder{
+        private final TextView movieTitle;
+        private final ImageView movieImage;
         public SearchViewModel(@NonNull View itemView) {
             super(itemView);
             movieTitle = itemView.findViewById(R.id.title_img);

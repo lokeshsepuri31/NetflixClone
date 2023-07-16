@@ -36,8 +36,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     public static final int FAVORITE_POSITION = 2;
     public static final int PROFILE_POSITION = 3;
 
-    public int backCounts = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +69,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             e.printStackTrace();
         }
 
-        getSupportActionBar().hide();
+        if(getSupportActionBar() != null)
+            getSupportActionBar().hide();
     }
 
     public static void selectBottomNavigationViewMenuItem(int id) {

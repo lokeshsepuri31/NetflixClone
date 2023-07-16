@@ -61,12 +61,16 @@ public abstract class NetworkCallbackAbstract extends ConnectivityManager.Networ
     }
 
     public static void showSnackbar(View view,String message){
-        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
-        View v = snackbar.getView();
-        snackbar.setBackgroundTint(Color.BLACK);
-        TextView textView = new TextView(v.getContext());
-        textView.setTextColor(Color.WHITE);
-        snackbar.show();
+        try {
+            Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+            View v = snackbar.getView();
+            snackbar.setBackgroundTint(Color.BLACK);
+            TextView textView = new TextView(v.getContext());
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
+        }catch(IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
 

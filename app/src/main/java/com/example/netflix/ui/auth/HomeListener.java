@@ -1,7 +1,6 @@
 package com.example.netflix.ui.auth;
 
 import okhttp3.Request;
-import retrofit2.Response;
 
 public abstract class HomeListener<T> {
 

@@ -4,8 +4,8 @@ import java.util.List;
 
 public class ParentItem {
 
-    private String parentItemTitle;
-    private List<ChildItem> childItemList;
+    private final String parentItemTitle;
+    private final List<ChildItem> childItemList;
 
     public ParentItem(
             String parentItemTitle,
@@ -21,21 +21,9 @@ public class ParentItem {
         return parentItemTitle;
     }
 
-    public void setParentItemTitle(
-            String parentItemTitle)
-    {
-        this.parentItemTitle = parentItemTitle;
-    }
-
     public List<ChildItem> getChildItemList()
     {
         return this.childItemList;
-    }
-
-    public void setChildItemList(
-            List<ChildItem> childItemList)
-    {
-        this.childItemList = childItemList;
     }
 }
 

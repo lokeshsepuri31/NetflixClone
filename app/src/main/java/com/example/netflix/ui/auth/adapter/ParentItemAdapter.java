@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.ParentViewHolder> {
 
-    private List<ParentItem> itemList;
+    private final List<ParentItem> itemList;
     public ParentItemAdapter(List<ParentItem> itemList) {
         this.itemList = itemList;
     }
@@ -43,10 +43,10 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
         return itemList.size();
     }
 
-    class ParentViewHolder extends RecyclerView.ViewHolder {
+    static class ParentViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView parentItemTitle;
-        private RecyclerView childRecyclerView;
+        private final TextView parentItemTitle;
+        private final RecyclerView childRecyclerView;
 
         ParentViewHolder(final View itemView) {
             super(itemView);

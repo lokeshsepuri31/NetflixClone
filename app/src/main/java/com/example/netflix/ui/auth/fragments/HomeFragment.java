@@ -19,14 +19,12 @@ import android.widget.Toast;
 
 import com.example.netflix.R;
 import com.example.netflix.data.pojo.Movies;
-import com.example.netflix.ui.auth.HomeActivity;
 import com.example.netflix.ui.auth.HomeListener;
 import com.example.netflix.ui.auth.HomeVM;
 import com.example.netflix.ui.auth.adapter.ChildItem;
 import com.example.netflix.ui.auth.adapter.ParentItem;
 import com.example.netflix.ui.auth.adapter.ParentItemAdapter;
 import com.example.netflix.util.NetworkCallbackAbstract;
-import com.example.netflix.util.NetworkReceiverCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,27 +85,22 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess() {
                 Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (homeVM.moviesList == null)
-                            getMovies();
-                        else
-                            renderMovies(homeVM.moviesList);
-                    }
+                handler.post(() -> {
+                    if (homeVM.moviesList == null)
+                        getMovies();
+                    else
+                        renderMovies(homeVM.moviesList);
                 });
             }
 
             @Override
             public void onFailure(String message) {
                 Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (homeVM.moviesList != null)
-                            renderMovies(homeVM.moviesList);
-                        showSnackbar(parentRecyclerViewItem, message);
-                    }
+                handler.post(() -> {
+                    if (homeVM.moviesList != null)
+                        renderMovies(homeVM.moviesList);
+                    showSnackbar(parentRecyclerViewItem, message);
+
                 });
             }
         };

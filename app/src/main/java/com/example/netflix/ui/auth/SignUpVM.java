@@ -1,7 +1,6 @@
 package com.example.netflix.ui.auth;
 
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.lifecycle.ViewModel;
 
@@ -25,16 +24,12 @@ public class SignUpVM extends ViewModel {
     public void onSignUp(View view){
         if(email.isEmpty() && password.isEmpty() && re_password.isEmpty()){
             loginListener.onFailure("credentials");
-            return;
         } else if (!password.equals(re_password)) {
             loginListener.onFailure("not same");
-            return;
         } else if (!TextValidationUtility.emailValidation(email)) {
             loginListener.onFailure("Please provide a valid email.");
-            return;
         } else if (!TextValidationUtility.passwordLengthValidation(password) && !TextValidationUtility.passwordSpecialCharacterValidation(password)) {
             loginListener.onFailure("Please provide a valid password");
-            return;
         } else{
             if(NetworkReceiverCallback.isConnection(view.getContext())){
                 email = email.toLowerCase(Locale.ROOT);
@@ -44,7 +39,6 @@ public class SignUpVM extends ViewModel {
                         loginListener.onSuccess();
                 }else{
                     loginListener.onFailure("This email already exists!");
-                    return;
                 }
             }else{
                 loginListener.onNetworkError();

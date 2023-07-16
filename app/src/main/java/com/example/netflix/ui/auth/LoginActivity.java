@@ -1,29 +1,19 @@
 package com.example.netflix.ui.auth;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,12 +22,7 @@ import com.example.netflix.data.room.DatabaseHandler;
 import com.example.netflix.util.GoogleClient;
 import com.example.netflix.util.NetworkReceiverCallback;
 import com.example.netflix.databinding.ActivityLoginBinding;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.Duration;
@@ -70,15 +55,12 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         boolean isLogin = sharedPreferences.getBoolean(ISLOGIN, false);
         signup = findViewById(R.id.signup);
 
-        signup.setOnClickListener((view) -> {
-            onSignUp(view);
-        });
-        setLauncher();
+        signup.setOnClickListener(this::onSignUp);
+        password = binding.password;
+        username = binding.username;
 
-        password = findViewById(R.id.password);
-        username = findViewById(R.id.username);
-
-        password.getEditText().addTextChangedListener(new TextWatcher() {
+        if(password.getEditText() != null)
+            password.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -98,7 +80,8 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
             }
         });
 
-        username.getEditText().addTextChangedListener(new TextWatcher() {
+        if(username.getEditText() != null)
+            username.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -127,31 +110,14 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         getWindow().setStatusBarColor(getResources().getColor(R.color.black));
     }
 
-    private void setLauncher(){
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if(result.getResultCode() == 0){
-                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                    try{
-//                        GoogleSignInAccount
-                    }catch (Exception e){
-                        System.out.println(e.getMessage());
-                    }
-                }
-                else {
-                    Toast.makeText(LoginActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
+
 
     @Override
     public void onSuccess() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.edit().putString(LOGIN_USERNAME,loginVM.username).commit();
-        sharedPreferences.edit().putInt(LOGIN_USERID,loginVM.userId).commit();
-        sharedPreferences.edit().putBoolean(ISLOGIN, true).commit();
+        sharedPreferences.edit().putString(LOGIN_USERNAME,loginVM.username).apply();
+        sharedPreferences.edit().putInt(LOGIN_USERID,loginVM.userId).apply();
+        sharedPreferences.edit().putBoolean(ISLOGIN, true).apply();
         startActivity(new Intent(this, HomeActivity.class));
     }
 
@@ -161,9 +127,9 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         if(message.equals("both")){
             username.setError("Please provide the Username");
             password.setError("Please provide the Password");
-        }else if (message.contains("Password"))
+        }else if (message.contains("Password") && !message.contains("Username"))
             password.setError(message);
-        else if(message.contains("Username"))
+        else if(message.contains("Username") && !message.contains("Password"))
             username.setError(message);
         else
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

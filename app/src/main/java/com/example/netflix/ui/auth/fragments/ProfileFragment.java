@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.example.netflix.R;
 import com.example.netflix.ui.auth.LoginActivity;
 
-import java.util.prefs.Preferences;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -87,19 +86,16 @@ public class ProfileFragment extends Fragment {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        loggedInUser.setText("Hi,"+sharedPreferences.getString(LoginActivity.LOGIN_USERNAME,""));
+        loggedInUser.setText("Hi," + sharedPreferences.getString(LoginActivity.LOGIN_USERNAME, ""));
 
         Button logout = view.findViewById(R.id.textButton);
 
-        logout.setOnClickListener((v)->{
-            onLogout();
-        });
-
+        logout.setOnClickListener(this::onLogout);
 
     }
 
-    public void onLogout(){
-        sharedPreferences.edit().clear().commit();
+    public void onLogout(View view) {
+        sharedPreferences.edit().clear().apply();
         startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 }

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.netflix.R;
@@ -21,7 +20,7 @@ import java.util.List;
 
 public class ChildItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<ChildItem> childItemList;
+    private final List<ChildItem> childItemList;
     private View view;
     Activity activity;
 
@@ -67,7 +66,7 @@ public class ChildItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return childItemList.size();
     }
 
-    class ChildViewHolder extends RecyclerView.ViewHolder {
+    static class ChildViewHolder extends RecyclerView.ViewHolder {
 
         TextView childItemTitle;
 

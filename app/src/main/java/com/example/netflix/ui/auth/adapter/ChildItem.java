@@ -8,9 +8,9 @@ import androidx.annotation.NonNull;
 
 public class ChildItem implements Parcelable {
 
-    private String childItemTitle;
+    private final String childItemTitle;
 
-    private String url,id;
+    private final String url,id;
 
     private Activity activity;
 

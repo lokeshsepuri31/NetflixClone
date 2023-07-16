@@ -7,7 +7,6 @@ import com.example.netflix.data.pojo.Movies;
 import com.example.netflix.data.pojo.Titles;
 import com.example.netflix.util.RetrofitClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -22,7 +21,6 @@ public class HomeVM extends ViewModel {
 
     public String example;
 
-    List<String> movieIds = new ArrayList<>();
     MoviesInterface moviesInterface = RetrofitClient.getClient().create(MoviesInterface.class);
 
     public void getMovies(HomeListener<List<Movies>> homeListener){

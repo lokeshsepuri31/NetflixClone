@@ -3,14 +3,12 @@ package com.example.netflix.ui.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -25,7 +23,6 @@ import com.example.netflix.data.room.DatabaseHandler;
 import com.example.netflix.data.room.entities.FavoriteMovies;
 import com.example.netflix.ui.auth.adapter.ChildItem;
 import com.example.netflix.ui.auth.adapter.ChildItemAdapter;
-import com.example.netflix.ui.auth.adapter.FavoriteItemsAdapter;
 import com.example.netflix.util.ByteUtility;
 import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
@@ -84,7 +81,8 @@ public class WatchNowActivity extends AppCompatActivity {
             addToFavorites();
         });
 
-        getSupportActionBar().hide();
+        if(getSupportActionBar() != null)
+            getSupportActionBar().hide();
     }
 
     public void setColorOfIcon(boolean isMovieAlreadyInDB){

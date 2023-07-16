@@ -7,7 +7,6 @@ import com.example.netflix.data.pojo.Movies;
 import com.example.netflix.data.pojo.Titles;
 import com.example.netflix.util.RetrofitClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;

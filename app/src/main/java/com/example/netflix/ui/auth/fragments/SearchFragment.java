@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,7 +90,7 @@ public class SearchFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        if(searchVM == null)
+        if (searchVM == null)
             searchVM = new ViewModelProvider(getActivity()).get(SearchVM.class);
     }
 
@@ -108,34 +107,26 @@ public class SearchFragment extends Fragment {
         search_movies = view.findViewById(R.id.search_movies);
         movieListRecyclerView = view.findViewById(R.id.search_recycler_view);
         search_movies.requestFocus();
-        search_movies.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE && NetworkReceiverCallback.isConnection(getContext())) {
-                    if (!search_movies.getText().toString().equals(""))
-                        searchMovie(search_movies.getText().toString());
-                    else
-                        Toast.makeText(getActivity(), "Please provide a movie name!", Toast.LENGTH_SHORT).show();
-                    return true;
-                } else {
-                    NetworkReceiverCallback.showSnackbar(search_movies);
-                }
-                return false;
+        search_movies.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE && NetworkReceiverCallback.isConnection(getContext())) {
+                if (!search_movies.getText().toString().equals(""))
+                    searchMovie(search_movies.getText().toString());
+                else
+                    Toast.makeText(getActivity(), "Please provide a movie name!", Toast.LENGTH_SHORT).show();
+                return true;
+            } else {
+                NetworkReceiverCallback.showSnackbar(search_movies);
             }
+            return false;
         });
 
         networkCallbackAbstract = new NetworkCallbackAbstract(getActivity()) {
             @Override
             public void onSuccess() {
                 Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (searchVM.moviesList == null) {
-
-                        }else{
-                            renderMovieSearch(searchVM.moviesList);
-                        }
-                    }
+                handler.post(() -> {
+                    if (searchVM.moviesList != null)
+                        renderMovieSearch(searchVM.moviesList);
                 });
             }
 
@@ -143,13 +134,10 @@ public class SearchFragment extends Fragment {
             public void onFailure(String message) {
 
                 Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (searchVM.moviesList != null)
-                            renderMovieSearch(searchVM.moviesList);
-                        showSnackbar(movieListRecyclerView, message);
-                    }
+                handler.post(() -> {
+                    if (searchVM.moviesList != null)
+                        renderMovieSearch(searchVM.moviesList);
+                    showSnackbar(movieListRecyclerView, message);
                 });
             }
         };
@@ -161,7 +149,7 @@ public class SearchFragment extends Fragment {
         networkCallbackAbstract.register(networkCallbackAbstract);
     }
 
-    public void searchMovie(String movie){
+    public void searchMovie(String movie) {
         searchVM.getMovieNameByTitle(movie, new HomeListener<List<Movies>>() {
             @Override
             public void onSuccess(List<Movies> response) {
@@ -175,7 +163,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onError(Request request, Exception e) {
-
+                Toast.makeText(getActivity(), "SomeThing went wrong!", Toast.LENGTH_SHORT).show();
             }
         });
     }

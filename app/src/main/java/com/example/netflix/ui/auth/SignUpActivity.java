@@ -14,7 +14,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.netflix.R;
 import com.example.netflix.data.room.DatabaseHandler;
@@ -94,7 +93,7 @@ public class SignUpActivity extends AppCompatActivity implements LoginListener{
                         passwordLayout.setError("Length of password should be between 8 and 12 characters.");
                     }
                 }else{
-                    passwordLayout.setError("Password should contain atleast one special character.");
+                    passwordLayout.setError("Password should contain at least one special character.");
                 }
 
             }
@@ -123,7 +122,8 @@ public class SignUpActivity extends AppCompatActivity implements LoginListener{
         });
 
 
-        getSupportActionBar().hide();
+        if(getSupportActionBar() != null)
+            getSupportActionBar().hide();
     }
 
     @Override
@@ -131,7 +131,7 @@ public class SignUpActivity extends AppCompatActivity implements LoginListener{
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String[] username = signUpVM.email.split("@");
-        sharedPreferences.edit().putString(LOGIN_USERNAME,username[0]).commit();
+        sharedPreferences.edit().putString(LOGIN_USERNAME,username[0]).apply();
 
         Intent intent = new Intent(this,SuccessActivity.class);
         intent.putExtra("message","Your Account is ready!, Login with username (Ex: something@gmail.com your username is 'something'.)");
