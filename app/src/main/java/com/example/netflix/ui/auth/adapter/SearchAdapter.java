@@ -33,7 +33,10 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         SearchViewModel searchViewModel = (SearchViewModel) holder;
         SearchItem searchItem = searchItemList.get(position);
         searchViewModel.movieTitle.setText(searchItem.getTitle());
-        Picasso.get().load(searchItem.getUrl()).into(searchViewModel.movieImage);
+        Picasso.get().load(searchItem.getUrl())
+                .placeholder(R.mipmap.ic_launcher)
+                .resize(350,460)
+                .into(searchViewModel.movieImage);
         searchViewModel.movieImage.setOnClickListener((view)->{
             Intent intent = new Intent(searchItem.getActivity(), WatchNowActivity.class);
             ChildItem childItem = new ChildItem(searchItem.getTitle(),searchItem.getUrl(),searchItem.getActivity(),searchItem.getId());

@@ -12,4 +12,5 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="network_error">Please check the internet connectivity</string>
+    <string name="data">Data</string>
 </resources>

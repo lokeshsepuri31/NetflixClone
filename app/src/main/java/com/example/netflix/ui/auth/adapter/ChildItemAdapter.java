@@ -44,7 +44,10 @@ public class ChildItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ChildViewHolder childViewHolder = (ChildViewHolder) holder;
         childViewHolder.childItemTitle.setText(childItem.getChildItemTitle());
         activity = childItem.getActivity();
-        Picasso.get().load(childItem.getUrl()).into(childViewHolder.childImage);
+        Picasso.get().load(childItem.getUrl())
+                .placeholder(R.mipmap.ic_launcher)
+                .resize(350,460)
+                .into(childViewHolder.childImage);
         childViewHolder.childImage.setOnClickListener((v)->{
             if(NetworkReceiverCallback.isConnection(activity))
                 onMovieSelected(position);
