@@ -7,6 +7,22 @@
     tools:context=".ui.auth.fragments.HomeFragment"
     android:id="@+id/fragment_home">
 
+    <FrameLayout
+        android:id="@+id/search_criteria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="84dp"
+            android:layout_gravity="start"
+            android:src="@drawable/icon" />
+    </FrameLayout>
+
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
@@ -25,7 +41,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/search_criteria" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

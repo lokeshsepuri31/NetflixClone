@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.netflix.R;
+import com.example.netflix.ui.auth.HomeActivity;
 import com.example.netflix.ui.auth.WatchNowActivity;
+import com.example.netflix.ui.auth.fragments.WatchNowFragment;
 import com.example.netflix.util.NetworkReceiverCallback;
 import com.squareup.picasso.Picasso;
 
@@ -57,11 +60,13 @@ public class ChildItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void onMovieSelected(int position){
-        Intent intent = new Intent(activity,WatchNowActivity.class);
         ChildItem childItem = childItemList.get(position);
-        intent.putExtra(MOVIE_SELECTED,childItem);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        activity.startActivity(intent);
+        WatchNowFragment watchNowFragment = new WatchNowFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(MOVIE_SELECTED,childItem);
+        watchNowFragment.setArguments(bundle);
+        HomeActivity homeActivity = (HomeActivity) activity;
+        homeActivity.openWatchNowFragment(watchNowFragment);
     }
 
     @Override

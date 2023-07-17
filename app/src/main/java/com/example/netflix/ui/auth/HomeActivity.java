@@ -2,6 +2,8 @@ package com.example.netflix.ui.auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
@@ -12,11 +14,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.netflix.R;
+import com.example.netflix.ui.auth.adapter.ChildItem;
 import com.example.netflix.ui.auth.adapter.FragmentAdapter;
 import com.example.netflix.ui.auth.fragments.FavoriteFragment;
 import com.example.netflix.ui.auth.fragments.HomeFragment;
 import com.example.netflix.ui.auth.fragments.ProfileFragment;
 import com.example.netflix.ui.auth.fragments.SearchFragment;
+import com.example.netflix.ui.auth.fragments.WatchNowFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.lang.reflect.Field;
@@ -26,7 +30,7 @@ import java.time.Instant;
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     ViewPager2 viewPager2;
 
-    static BottomNavigationView bottomNavigationView;
+    public static BottomNavigationView bottomNavigationView;
 
     Instant startTime;
 
@@ -64,7 +68,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         try {
             Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
             field.setAccessible(true);
-            field.set(null, 100 * 1024 * 1024); //the 100MB is the new size
+            field.set(null, 100 * 1024 * 1024);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -131,5 +135,14 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 }
             }
         }
+    }
+
+    public void openWatchNowFragment(WatchNowFragment watchNowFragment){
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_home, watchNowFragment)
+                .addToBackStack("watch now").commit();
+    }
+
+    public void onBack(){
+        getSupportFragmentManager().popBackStack("watch now",FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }
