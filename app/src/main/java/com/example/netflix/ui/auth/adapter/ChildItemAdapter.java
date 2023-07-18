@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.example.netflix.R;
 import com.example.netflix.ui.auth.HomeActivity;
-import com.example.netflix.ui.auth.WatchNowActivity;
 import com.example.netflix.ui.auth.fragments.WatchNowFragment;
 import com.example.netflix.util.NetworkReceiverCallback;
 import com.squareup.picasso.Picasso;

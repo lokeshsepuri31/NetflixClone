@@ -39,7 +39,6 @@ public class WatchNowFragment extends Fragment {
     ChildItem watchNowMovie;
 
     SharedPreferences sharedPreferences;
-
     TextView title,back;
 
     ImageView movieImage;
