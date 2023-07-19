@@ -11,7 +11,4 @@ public class Caption{
         return movieName;
     }
 
-    public void setMovieName(String movieName) {
-        this.movieName = movieName;
-    }
 }

@@ -12,7 +12,7 @@ public class Users {
     private int id;
 
     @ColumnInfo(name = "emailId")
-    private String email;
+    private final String email;
 
     @ColumnInfo(name = "username")
     private String username;
@@ -30,10 +30,6 @@ public class Users {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getUsername() {

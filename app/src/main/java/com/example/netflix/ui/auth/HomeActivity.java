@@ -2,7 +2,6 @@ package com.example.netflix.ui.auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -14,7 +13,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.netflix.R;
-import com.example.netflix.ui.auth.adapter.ChildItem;
 import com.example.netflix.ui.auth.adapter.FragmentAdapter;
 import com.example.netflix.ui.auth.fragments.FavoriteFragment;
 import com.example.netflix.ui.auth.fragments.HomeFragment;
@@ -27,6 +25,7 @@ import java.lang.reflect.Field;
 import java.time.Duration;
 import java.time.Instant;
 
+@SuppressWarnings("ALL")
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     ViewPager2 viewPager2;
 
@@ -137,9 +136,13 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-    public void openWatchNowFragment(WatchNowFragment watchNowFragment){
+    public void openWatchNowFragment(String fragment,WatchNowFragment watchNowFragment){
+        if(fragment.equals("Home"))
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_home, watchNowFragment)
                 .addToBackStack("watch now").commit();
+        else
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_search,watchNowFragment)
+                    .addToBackStack("watch now").commit();
     }
 
     public void onBack(){

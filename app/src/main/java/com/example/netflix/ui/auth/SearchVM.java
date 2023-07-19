@@ -1,5 +1,6 @@
 package com.example.netflix.ui.auth;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
 import com.example.netflix.data.MoviesInterface;
@@ -24,14 +25,14 @@ public class SearchVM extends ViewModel {
 
       titlesCall.enqueue(new Callback<Titles>() {
          @Override
-         public void onResponse(Call<Titles> call, Response<Titles> response) {
+         public void onResponse(@NonNull Call<Titles> call, @NonNull Response<Titles> response) {
             Titles titles = response.body();
-            if(titles.moviesList!=null)
+            if(titles != null && titles.moviesList!=null)
                moviesList = titles.moviesList;
             homeListener.onSuccess(moviesList);
          }
          @Override
-         public void onFailure(Call<Titles> call, Throwable t) {
+         public void onFailure(@NonNull Call<Titles> call, @NonNull Throwable t) {
             titlesCall.cancel();
             homeListener.onFailure(call.hashCode(),t.getMessage());
          }

@@ -16,7 +16,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/black"
             tools:context=".ui.auth.LoginActivity">
 
@@ -26,6 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="175dp"
                 android:src="@drawable/app_logo"
+                android:contentDescription="@string/movie_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +35,7 @@
             <LinearLayout
                 android:id="@+id/login_details"
                 android:layout_width="match_parent"
-                android:layout_height="360dp"
+                android:layout_height="380dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -54,12 +55,13 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/profile_selector"
+                        android:drawableStart="@drawable/profile_selector"
                         android:drawablePadding="15dp"
                         android:imeOptions="actionNext"
                         android:text="@={viewModel.username}"
                         android:textColor="@color/white"
-                        android:textCursorDrawable="@color/white" />
+                        android:textCursorDrawable="@color/white"
+                        tools:ignore="VisualLintTextFieldSize" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,13 +76,15 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/password_selector"
+                        android:drawableStart="@drawable/password_selector"
                         android:drawablePadding="15dp"
                         android:imeOptions="actionNext"
                         android:inputType="textPassword"
                         android:text="@={viewModel.password}"
                         android:textColor="@color/white"
-                        android:textCursorDrawable="@color/white" />
+                        android:textColorHint="@color/white"
+                        android:textCursorDrawable="@color/white"
+                        tools:ignore="VisualLintTextFieldSize" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,7 +96,7 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="18dp"
-                    android:text="Forgot Password ?"
+                    android:text="@string/forgot_password"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
 
@@ -105,7 +109,7 @@
                     android:backgroundTint="@color/red"
                     android:onClick="@{viewModel::onLogin}"
                     android:padding="15dp"
-                    android:text="Login" />
+                    android:text="@string/login" />
 
             </LinearLayout>
 
@@ -122,14 +126,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Don't have an account? "
+                    android:text="@string/don_t_have_an_account"
                     android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/signup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sign Up"
+                    android:text="@string/sign_up"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -149,6 +153,7 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:scaleType="fitCenter"
+                    android:contentDescription="@string/facebook"
                     android:src="@drawable/facebook_icon" />
 
                 <ImageView
@@ -158,7 +163,9 @@
                     android:layout_weight="1"
                     android:onClick="onSignIn"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/google_icon" />
+                    android:contentDescription="@string/google"
+                    android:src="@drawable/google_icon"
+                    tools:ignore="UsingOnClickInXml" />
 
 
                 <ImageView
@@ -167,6 +174,7 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:scaleType="fitCenter"
+                    android:contentDescription="@string/twitter"
                     android:src="@drawable/twitter_icon" />
             </LinearLayout>
 

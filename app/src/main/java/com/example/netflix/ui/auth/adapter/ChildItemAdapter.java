@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +21,16 @@ import java.util.List;
 
 public class ChildItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final List<ChildItem> childItemList;
+    private List<ChildItem> childItemList;
     private View view;
     Activity activity;
 
     public static final String MOVIE_SELECTED = "Watch Now";
 
+
+    public ChildItemAdapter(){
+        // do nothing.
+    }
 
     ChildItemAdapter(List<ChildItem> childItemList) {
         this.childItemList = childItemList;
@@ -60,12 +63,16 @@ public class ChildItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void onMovieSelected(int position){
         ChildItem childItem = childItemList.get(position);
+        replaceFragment("Home",childItem);
+    }
+
+    public void replaceFragment(String fragment,ChildItem childItem){
         WatchNowFragment watchNowFragment = new WatchNowFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(MOVIE_SELECTED,childItem);
         watchNowFragment.setArguments(bundle);
-        HomeActivity homeActivity = (HomeActivity) activity;
-        homeActivity.openWatchNowFragment(watchNowFragment);
+        HomeActivity homeActivity = (HomeActivity) childItem.getActivity();
+        homeActivity.openWatchNowFragment(fragment,watchNowFragment);
     }
 
     @Override

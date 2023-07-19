@@ -20,23 +20,19 @@ public class FavoriteMovies {
     }
 
     @ColumnInfo(name = "userId")
-    private int userId;
+    private final int userId;
 
     @ColumnInfo(name = "id")
     private String id;
 
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    private byte[] image;
+    private final byte[] image;
 
     @ColumnInfo(name = "movie_title")
-    private String movieTitle;
+    private final String movieTitle;
 
     public int getUserId() {
         return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getId() {
@@ -51,16 +47,8 @@ public class FavoriteMovies {
         return image;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
     public String getMovieTitle() {
         return movieTitle;
-    }
-
-    public void setMovieTitle(String movieTitle) {
-        this.movieTitle = movieTitle;
     }
 
     public FavoriteMovies(int userId, String id, byte[] image, String movieTitle) {

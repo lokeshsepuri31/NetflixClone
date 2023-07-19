@@ -9,12 +9,6 @@ public class Movies{
     @SerializedName("primaryImage")
     PrimaryImage primaryImage = new PrimaryImage();
 
-    @SerializedName("titleType")
-    TitleType titleType = new TitleType();
-
-    @SerializedName("releaseYear")
-    ReleaseYear releaseYear = new ReleaseYear();
-
     @SerializedName("originalTitleText")
     OriginalText originalText = new OriginalText();
 
@@ -32,25 +26,5 @@ public class Movies{
 
     public PrimaryImage getPrimaryImage() {
         return this.primaryImage;
-    }
-
-    public void setPrimaryImage(PrimaryImage primaryImage) {
-        this.primaryImage = primaryImage;
-    }
-
-    public TitleType getTitleType() {
-        return this.titleType;
-    }
-
-    public void setTitleType(TitleType titleType) {
-        this.titleType = titleType;
-    }
-
-    public ReleaseYear getReleaseYear() {
-        return this.releaseYear;
-    }
-
-    public void setReleaseYear(ReleaseYear releaseYear) {
-        this.releaseYear = releaseYear;
     }
 }

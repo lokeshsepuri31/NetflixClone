@@ -44,9 +44,7 @@ public class SignUpActivity extends AppCompatActivity implements LoginListener{
         rePasswordLayout = findViewById(R.id.repassword);
         signIn = findViewById(R.id.signIn);
 
-        signIn.setOnClickListener((view)->{
-            onBackPressed();
-        });
+        signIn.setOnClickListener((view)-> onBackPressed());
 
         password = passwordLayout.getEditText();
         email = emailLayout.getEditText();

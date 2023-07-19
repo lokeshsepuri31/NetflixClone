@@ -16,9 +16,9 @@ import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private final List<SearchItem> searchItemList;
+    private final List<ChildItem> searchItemList;
 
-    public SearchAdapter(List<SearchItem> searchItemList){this.searchItemList = searchItemList;}
+    public SearchAdapter(List<ChildItem> searchItemList){this.searchItemList = searchItemList;}
 
     @NonNull
     @Override
@@ -29,8 +29,12 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         SearchViewModel searchViewModel = (SearchViewModel) holder;
-        SearchItem searchItem = searchItemList.get(position);
-        searchViewModel.movieTitle.setText(searchItem.getTitle());
+        ChildItem searchItem = searchItemList.get(position);
+        searchViewModel.movieTitle.setText(searchItem.getChildItemTitle());
+        searchViewModel.movieImage.setOnClickListener((view)->{
+            ChildItemAdapter childItemAdapter = new ChildItemAdapter();
+            childItemAdapter.replaceFragment("Search",searchItem);
+        });
         Picasso.get().load(searchItem.getUrl())
                 .placeholder(R.mipmap.ic_launcher)
                 .resize(350,460)

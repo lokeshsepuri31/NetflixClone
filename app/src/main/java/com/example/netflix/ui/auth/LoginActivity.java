@@ -3,17 +3,22 @@ package com.example.netflix.ui.auth;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,8 +80,11 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
             public void afterTextChanged(Editable s) {
                 if(!password.getEditText().getText().toString().isEmpty()){
                     password.setError(null);
-                }else
+                    setTextViewDrawableColor(password.getEditText(),R.color.white);
+                }else {
                     password.setError("Please provide the Password");
+                    setTextViewDrawableColor(password.getEditText(),R.color.red);
+                }
             }
         });
 
@@ -96,8 +104,11 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
             public void afterTextChanged(Editable s) {
                 if (!username.getEditText().getText().toString().isEmpty()){
                     username.setError(null);
-                }else
+                    setTextViewDrawableColor(username.getEditText(),R.color.white);
+                }else {
                     username.setError("Please provide the Username");
+                    setTextViewDrawableColor(username.getEditText(),R.color.red);
+                }
             }
         });
 
@@ -110,6 +121,13 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         getWindow().setStatusBarColor(getResources().getColor(R.color.black));
     }
 
+    private void setTextViewDrawableColor(EditText textView, int color) {
+        for (Drawable drawable : textView.getCompoundDrawablesRelative()) {
+            if (drawable != null) {
+                drawable.setColorFilter(new PorterDuffColorFilter(ContextCompat.getColor(textView.getContext(), color), PorterDuff.Mode.SRC_IN));
+            }
+        }
+    }
 
 
     @Override
@@ -123,16 +141,22 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
 
     @Override
     public void onFailure(String message) {
+        if(password.getEditText() !=null && username.getEditText() != null) {
+            if (message.equals("both")) {
+                username.setError("Please provide the Username");
+                password.setError("Please provide the Password");
 
-        if(message.equals("both")){
-            username.setError("Please provide the Username");
-            password.setError("Please provide the Password");
-        }else if (message.contains("Password") && !message.contains("Username"))
-            password.setError(message);
-        else if(message.contains("Username") && !message.contains("Password"))
-            username.setError(message);
-        else
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                setTextViewDrawableColor(password.getEditText(), R.color.red);
+                setTextViewDrawableColor(username.getEditText(), R.color.red);
+            } else if (message.contains("Password") && !message.contains("Username")) {
+                password.setError(message);
+                setTextViewDrawableColor(password.getEditText(), R.color.red);
+            } else if (message.contains("Username") && !message.contains("Password")) {
+                username.setError(message);
+                setTextViewDrawableColor(username.getEditText(), R.color.red);
+            } else
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

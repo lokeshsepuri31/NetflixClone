@@ -17,9 +17,6 @@
         android:theme="@style/Theme.NetFlix"
         tools:targetApi="31">
         <activity
-            android:name=".ui.auth.WatchNowActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.auth.SuccessActivity"
             android:exported="false" />
         <activity

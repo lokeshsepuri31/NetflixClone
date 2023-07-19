@@ -14,4 +14,13 @@
     <string name="network_error">Please check the internet connectivity</string>
     <string name="data">Data</string>
     <string name="watch_now_image_description">Show the watch now image</string>
+    <string name="each_movie">Data</string>
+    <string name="movie_image">Movie Image</string>
+    <string name="forgot_password">Forgot Password ?</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="facebook">Facebook</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="google">Google</string>
+    <string name="twitter">Twitter</string>
 </resources>
