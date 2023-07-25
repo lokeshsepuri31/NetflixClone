@@ -2,6 +2,7 @@ package com.example.netflix.ui.auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -16,9 +17,11 @@ import com.example.netflix.R;
 import com.example.netflix.ui.auth.adapter.FragmentAdapter;
 import com.example.netflix.ui.auth.fragments.FavoriteFragment;
 import com.example.netflix.ui.auth.fragments.HomeFragment;
+import com.example.netflix.ui.auth.fragments.NoInternetFragment;
 import com.example.netflix.ui.auth.fragments.ProfileFragment;
 import com.example.netflix.ui.auth.fragments.SearchFragment;
 import com.example.netflix.ui.auth.fragments.WatchNowFragment;
+import com.example.netflix.util.NetworkReceiverCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.lang.reflect.Field;
@@ -147,5 +150,19 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
     public void onBack(){
         getSupportFragmentManager().popBackStack("watch now",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+
+    public void noInternet(){
+        NoInternetFragment noInternetFragment = new NoInternetFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_home,noInternetFragment,"No Internet")
+                .addToBackStack("No Internet")
+                .commit();
+    }
+
+    public void backToOnline(){
+        Fragment noInternetFragment = getSupportFragmentManager().findFragmentByTag("No Internet");
+            if(noInternetFragment != null)
+                getSupportFragmentManager().popBackStack("No Internet",FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }

@@ -20,7 +20,10 @@ public abstract class NetworkCallbackAbstract extends ConnectivityManager.Networ
     ConnectivityManager cm;
     NetworkRequest networkRequest;
 
+    Context context;
+
     public NetworkCallbackAbstract(Context context){
+        this.context =context;
         cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         networkRequest = new NetworkRequest.Builder()
                 .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
@@ -34,7 +37,10 @@ public abstract class NetworkCallbackAbstract extends ConnectivityManager.Networ
 
     @Override
     public void onAvailable(@NonNull Network network) {
-        onSuccess();
+        if(NetworkReceiverCallback.isConnection(context))
+            onSuccess();
+        else
+            onFailure("Something went wrong!");
     }
 
     @Override

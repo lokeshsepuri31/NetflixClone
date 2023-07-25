@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 
 import com.example.netflix.R;
 import com.example.netflix.data.pojo.Movies;
+import com.example.netflix.ui.auth.HomeActivity;
 import com.example.netflix.ui.auth.HomeVM;
 import com.example.netflix.ui.auth.adapter.ChildItem;
 import com.example.netflix.ui.auth.adapter.ParentItem;
@@ -76,6 +77,8 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onSuccess() {
                     Handler handler = new Handler(Looper.getMainLooper());
+                    HomeActivity homeActivity = (HomeActivity) getActivity();
+                    homeActivity.backToOnline();
                     handler.post(() -> {
                         if (homeVM.getMovieList().getValue() == null) {
                             homeVM.getMovies();
@@ -88,6 +91,10 @@ public class HomeFragment extends Fragment {
                 public void onFailure(String message) {
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(() -> showSnackbar(parentRecyclerViewItem, message));
+                    if (homeVM.getMovieList().getValue() == null) {
+                        HomeActivity homeActivity = (HomeActivity) getActivity();
+                        homeActivity.noInternet();
+                    }
                 }
             };
 
